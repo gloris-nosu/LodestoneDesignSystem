@@ -1,9 +1,9 @@
 ---
 title: LDS Design Principles
 document_id: LDS-02
-version: 0.3
-status: Draft
-last_updated: 2026-07-19
+version: 0.4
+status: Review
+last_updated: 2026-07-20
 owner: Lodestone Design System
 ---
 
@@ -77,7 +77,7 @@ LDSでは、次の順序を原則として優先する。
 - どこで論点が変わるか
 - 何が事実か
 - 何が他者の主張か
-- どこから筆者の分析が始まるか
+- どこから記事著者の分析が始まるか
 - 結論がどこにあるか
 - 補足情報はどこか
 
@@ -355,15 +355,13 @@ LDSでは、この制約を欠点として扱うだけではなく、
 設計判断を明確にする資源として扱う。
 
 [`04_LDS_Lodestone_Authoring_Reference.md`](04_LDS_Lodestone_Authoring_Reference.md) で
-確認対象とする制約例：
+Evidenceを確認する制約例：
 
-- 任意CSSが使えない
-- 一般的なMarkdownとして扱わない
-- 利用可能なタグが限定される
-- 端末差がある
-- 文字数上限がある
-- 画像や動画の仕様が限定される
-- 黒背景を前提とする必要がある
+- 一般的なWeb記法との互換性
+- 利用可能な編集機能と専用コード
+- 端末や表示条件による差
+- 文字数やメディアに関する制限
+- 背景、色、折り返しなどのレンダリング条件
 
 制約があるからこそ、
 
@@ -529,8 +527,7 @@ LDSは、単一の理論から完成するものではない。
 
 例：
 
-- 黄色は結論に使う  
-  ただし、短い記事では色を使わない方がよい場合がある。
+- 結論には一貫した視覚表現を使う。ただし、短い記事では追加の装飾を使わない方がよい場合がある。
 
 - 折り畳みは補足に使う  
   ただし、補足が短ければ本文に残した方がよい。
@@ -679,3 +676,4 @@ LDSにおける良い設計とは、
 | 0.1 | 2026-07-19 | Initial draft. Defined LDS design priorities, visual semantics, emphasis limits, scanning and close-reading support, accessibility, device resilience, component reuse, and authorial voice preservation. |
 | 0.2 | 2026-07-19 | Generalized tool-specific language for publication readiness. |
 | 0.3 | 2026-07-19 | Consolidated design priorities, delegated editorial workflow and color application to LDS-03, aligned role terminology with Governance, and clarified evidence adoption boundaries. |
+| 0.4 | 2026-07-20 | Generalized technical constraint examples, removed the remaining fixed color mapping, standardized role terminology, and advanced the document to Review. |

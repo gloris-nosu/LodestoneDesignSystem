@@ -1,9 +1,9 @@
 ---
 title: LDS Lodestone Authoring Reference
 document_id: LDS-04
-version: 0.4
-status: Draft
-last_updated: 2026-07-19
+version: 0.5
+status: Review
+last_updated: 2026-07-20
 owner: Lodestone Design System
 ---
 
@@ -320,7 +320,7 @@ LDSで改めて検証する必要がある。
 - `#` 省略
 - 色名指定
 - 不正値
-- 黒背景でのコントラスト
+- 実際の背景色とのコントラスト
 - リンク文字への適用
 - 既読リンクへの影響
 - スマートフォン表示差
@@ -892,16 +892,14 @@ Lodestoneの日記検索画面では、次の条件が確認できる。
 
 ## 21. 技術上の前提と未確認範囲
 
-Lodestone固有実装を検証する際は、次を前提とする。
+現時点では、次の互換性や適用範囲が未確認または条件付きである。
 
-- 一般的なMarkdownとして扱わない
-- 任意HTMLが使えると仮定しない
-- 任意CSSは使えない前提とする
-- 一般的なBBCodeタグがすべて使えると仮定しない
-- タグ構文はLodestone固有実装として扱う
-- PC版とスマートフォン版の編集機能差を考慮する
-- 古い公式情報が現在も有効とは限らない
-- 外部画像・動画は将来の仕様変更で表示不能になる可能性がある
+- 一般的なMarkdown、HTML、CSSとの互換性は確認されていない
+- 一般的なBBCodeタグがすべて使えることは確認されていない
+- タグ構文はLodestone固有実装として個別に確認する必要がある
+- PC版とスマートフォン版の編集機能が同一であるかは未確認範囲を含む
+- 古い公式情報の現在における有効性は、個別のVerification noteを参照する
+- 外部画像・動画の表示は、外部サービスとLodestone双方の仕様に依存する
 - DB埋め込みコードはLodestone外では機能しない
 - ツールチップは表示場所によって利用できない場合がある
 
@@ -970,3 +968,4 @@ LDSでの推奨または標準利用可否を示す一覧ではない。
 | 0.2 | 2026-07-19 | 旧Google Drive運用への参照を除去し、リポジトリ管理規約へ一般化。 |
 | 0.3 | 2026-07-19 | 内部の実機検証計画と優先度付きバックログを公開技術リファレンスから分離。 |
 | 0.4 | 2026-07-19 | Applied Governance-defined Evidence, separated feature and syntax claims, removed editorial recommendations, and replaced standard candidates with an evidence-labeled syntax reference. |
+| 0.5 | 2026-07-20 | Generalized unresolved platform assumptions, aligned display terminology, completed the cross-document consistency review, and advanced the document to Review. |
