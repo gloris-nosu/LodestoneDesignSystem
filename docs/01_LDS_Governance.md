@@ -1,7 +1,7 @@
 ---
 title: LDS Governance
 document_id: LDS-01
-version: 0.3
+version: 0.4
 status: Draft
 last_updated: 2026-07-19
 owner: Lodestone Design System
@@ -713,6 +713,30 @@ LDS文書に次を含めない。
 - 非公開メールアドレス
 - 無許可の第三者情報
 
+### 16.3 ライセンスと第三者権利
+
+特記がない限り、公開リポジトリでLodestone Design System contributorsが作成した文書には、
+Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International
+（CC BY-NC-SA 4.0）を適用する。
+
+利用者は、ライセンス条件に従って非営利目的で文書を共有・改変できる。
+改変物を共有する場合は、Lodestone Design Systemを表示し、変更の有無を示し、
+同一または互換ライセンスを適用する。
+
+次の素材は、LDSのライセンス対象に含めない。
+
+- FINAL FANTASY XIVの名称、商標、ロゴ
+- ゲーム内または公式サイトのスクリーンショット、画像、文章、データ
+- Square Enixまたはその他の第三者が権利を持つ素材
+
+第三者素材を公開成果物へ追加する場合は、公開前に利用条件を確認し、
+必要な権利表記と出典を付け、LDS独自文書とのライセンス境界を明示する。
+FINAL FANTASY XIV素材には、その時点で最新の
+[公式著作物利用条件](https://support.jp.square-enix.com/rule.php?id=5381&la=0&tag=authc)を適用する。
+
+将来、プログラムコードを追加する場合は、文書ライセンスを自動適用せず、
+コードに適したライセンスと適用範囲を別途決定する。
+
 ---
 
 ## 17. 品質確認チェックリスト
@@ -732,6 +756,7 @@ LDS文書に次を含めない。
 - [ ] 重複が過剰でない
 - [ ] 用語が統一されている
 - [ ] 未検証事項が明示されている
+- [ ] ライセンスと第三者権利の境界が明示されている
 - [ ] Git差分とcommit対象を確認している
 
 ---
@@ -770,3 +795,4 @@ LDSは固定された完成品ではなく、
 | 0.1 | 2026-07-19 | Initial governance draft. Defined source of truth, naming, status, versioning, evidence, change workflow, Case Study lifecycle, assisted editing, and security policy. |
 | 0.2 | 2026-07-19 | Replaced the former Google Drive source-of-truth model with repository Markdown and Git/GitHub history management. Updated workflow, assisted editing, access, and quality checks accordingly. |
 | 0.3 | 2026-07-19 | Generalized tool-specific editing rules and removed internal work planning from the public governance document. |
+| 0.4 | 2026-07-19 | Established CC BY-NC-SA 4.0 for original LDS documentation and defined the boundary for Square Enix and other third-party materials. |
