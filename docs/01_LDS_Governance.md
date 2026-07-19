@@ -1,7 +1,7 @@
 ---
 title: LDS Governance
 document_id: LDS-01
-version: 0.4
+version: 0.5
 status: Draft
 last_updated: 2026-07-19
 owner: Lodestone Design System
@@ -14,8 +14,10 @@ owner: Lodestone Design System
 本書は、Lodestone Design System（LDS）を構成する文書・検証記録・テンプレート・事例研究を、
 一貫した規則で作成、更新、参照、廃止するための管理方針を定める。
 
-LDSの技術仕様は `04_LDS_Lodestone_Authoring_Reference.md`、
-編集方法論は `03_LDS_Editorial_Methodology.md` が扱う。
+LDSの技術仕様は
+[`04_LDS_Lodestone_Authoring_Reference.md`](04_LDS_Lodestone_Authoring_Reference.md)、
+編集方法論は
+[`03_LDS_Editorial_Methodology.md`](03_LDS_Editorial_Methodology.md)が扱う。
 
 本書が扱うのは、次の問いである。
 
@@ -29,7 +31,9 @@ LDSの技術仕様は `04_LDS_Lodestone_Authoring_Reference.md`、
 
 ## 2. 適用範囲
 
-本書は、LDSプロジェクト内の次の成果物に適用する。
+### 2.1 管理対象成果物
+
+本書は、LDSプロジェクト内の次の管理対象成果物に適用する。
 
 - プロジェクト概要
 - ガバナンス文書
@@ -45,12 +49,41 @@ LDSの技術仕様は `04_LDS_Lodestone_Authoring_Reference.md`、
 - 補助データ
 - スクリーンショット
 
-対象外：
+このうち、LDS-00からLDS-04までの5文書を基幹文書と呼ぶ。
+
+### 2.2 対象外
 
 - 公開済みLodestone日記そのもの
 - 個々の記事の主張内容
 - FINAL FANTASY XIV運営の公式仕様管理
 - GitHubアカウント自体の管理規定
+
+### 2.3 役割と権限
+
+LDSでは、記事制作上の役割と文書管理上の役割を区別する。
+同じ人物が複数の役割を兼ねる場合も、判断権限は役割ごとに扱う。
+
+#### 記事著者
+
+- 記事の主張、価値判断、結論、批判の方向性を決定する
+- 著者固有の文体と声に関する最終判断を持つ
+- LDS文書のStatusや技術仕様を、記事著者であることだけを根拠に確定しない
+
+#### 編集者・編集支援
+
+- 論理構造、情報分類、見出し、視覚表現、BBCode、可読性の改善を支援する
+- 記事著者の主張、価値判断、結論を無断で変更しない
+- LDSの未確認仕様や文書Statusを独自に確定しない
+
+#### LDS maintainer
+
+- 基幹文書と管理対象成果物の整合性を管理する
+- 技術仕様と設計ルールの採否を判断する
+- 文書Statusの変更とStable昇格を承認する
+- Case Studyや検証結果をLDS本体へ反映するか判断する
+- 公開範囲、ライセンス境界、変更履歴を管理する
+
+LDS maintainerは、repository ownerまたはownerが明示的に権限を付与した者とする。
 
 ---
 
@@ -73,8 +106,8 @@ GitHubは、次の情報を管理する正本とする。
 - branchと共有状態
 - push済みの版
 
-Google Drive上のコピーは正本として扱わない。
-一時ファイル、書き出しファイル、他サービス上のコピーも同様とする。
+リポジトリ外のコピー、一時ファイル、書き出しファイル、
+他サービス上のコピーは正本として扱わない。
 
 ### 3.3 公開記事との関係
 
@@ -93,7 +126,7 @@ Google Drive上のコピーは正本として扱わない。
 
 ### 4.1 基本形式
 
-LDSの主要文書は、次の形式で命名する。
+LDSの基幹文書は、次の形式で命名する。
 
 ```text
 NN_LDS_Document_Name.md
@@ -104,6 +137,7 @@ NN_LDS_Document_Name.md
 ```text
 00_LDS_Project_Overview.md
 01_LDS_Governance.md
+02_LDS_Design_Principles.md
 03_LDS_Editorial_Methodology.md
 04_LDS_Lodestone_Authoring_Reference.md
 ```
@@ -125,7 +159,7 @@ NN_LDS_Document_Name.md
 
 ### 4.3 文書ID
 
-各主要文書にはYAMLフロントマターで文書IDを付与する。
+各基幹文書にはYAMLフロントマターで文書IDを付与する。
 
 ```yaml
 document_id: LDS-01
@@ -187,6 +221,8 @@ document_id: LDS-01
 - 主要な未検証事項が明示されている
 - 他文書との重大な矛盾がない
 - 変更履歴が記録されている
+
+Stableへの昇格は、関連文書との整合性と根拠を確認した上で、LDS maintainerが承認する。
 
 ### 5.4 Experimental
 
@@ -275,7 +311,7 @@ MAJOR.MINOR
 
 ## 7. 更新履歴
 
-各主要文書の末尾に、Revision Historyを置く。
+各基幹文書の末尾に、Revision Historyを置く。
 
 推奨形式：
 
@@ -346,7 +382,7 @@ Updated document.
 ### 9.1 証拠区分
 
 Lodestone技術仕様については、
-`04_LDS_Lodestone_Authoring_Reference.md` の証拠区分を使用する。
+[`04_LDS_Lodestone_Authoring_Reference.md`](04_LDS_Lodestone_Authoring_Reference.md)の証拠区分を使用する。
 
 - Official
 - Verified
@@ -432,10 +468,11 @@ Commit / Push
 
 最低限、次の整合性を確認する。
 
-- Project Overview
-- Governance
-- Editorial Methodology
-- Lodestone Authoring Reference
+- [Project Overview](00_LDS_Project_Overview.md)
+- [Governance](01_LDS_Governance.md)
+- [Design Principles](02_LDS_Design_Principles.md)
+- [Editorial Methodology](03_LDS_Editorial_Methodology.md)
+- [Lodestone Authoring Reference](04_LDS_Lodestone_Authoring_Reference.md)
 - 関連コンポーネント仕様
 - 関連Case Study
 
@@ -467,6 +504,7 @@ Commit / Push
 - Git差分とcommit対象の確認
 
 commitとpushは、必要な確認が完了した後に行う。
+文書Statusの変更とStable昇格を含む場合は、LDS maintainerの承認を記録する。
 
 ---
 
@@ -503,8 +541,25 @@ commitとpushは、必要な確認が完了した後に行う。
 - 変更
 - 証拠管理
 - 文書ライフサイクル
+- 役割と権限
+- ライセンスと公開境界
 
-### 11.3 Editorial Methodology
+### 11.3 Design Principles
+
+```text
+02_LDS_Design_Principles.md
+```
+
+扱う内容：
+
+- 設計判断の価値基準
+- 品質評価の優先順位
+- 情報デザインの原則
+- 複数の設計案から選ぶための判断基準
+
+具体的な編集手順やLodestoneの技術仕様は持たせない。
+
+### 11.4 Editorial Methodology
 
 ```text
 03_LDS_Editorial_Methodology.md
@@ -519,9 +574,9 @@ commitとpushは、必要な確認が完了した後に行う。
 - Color
 - Spacing
 - Folding
-- 品質評価
+- 品質評価の実施手順
 
-### 11.4 Lodestone Authoring Reference
+### 11.5 Lodestone Authoring Reference
 
 ```text
 04_LDS_Lodestone_Authoring_Reference.md
@@ -668,7 +723,7 @@ Deprecated文書またはルールには、次を記載する。
 編集支援ツールや自動化は、根拠なく次を行わない。
 
 - 未確認仕様を確定扱い
-- 著者の意図を変更
+- 記事著者の意図を変更
 - 参考記事を公式仕様扱い
 - 文書状態をStableへ自動昇格
 - 証拠なしの最適値断定
@@ -766,22 +821,22 @@ FINAL FANTASY XIV素材には、その時点で最新の
 LDSは、次の循環で成熟させる。
 
 ```text
-Platform Specification
-↓
-Governance
-↓
+Design Principles + Authoring Reference
+                  ↓
 Editorial Methodology
-↓
+                  ↓
 Component Design
-↓
+                  ↓
 Article Application
-↓
+                  ↓
 Visual Verification
-↓
+                  ↓
 Case Study
-↓
-System Revision
+                  ↓
+Evidence Review → System Revision
 ```
+
+Governanceはこの循環の一段階ではなく、すべての段階へ適用する管理規則である。
 
 LDSは固定された完成品ではなく、
 実際の記事作成と検証を通じて更新される設計システムである。
@@ -796,3 +851,4 @@ LDSは固定された完成品ではなく、
 | 0.2 | 2026-07-19 | Replaced the former Google Drive source-of-truth model with repository Markdown and Git/GitHub history management. Updated workflow, assisted editing, access, and quality checks accordingly. |
 | 0.3 | 2026-07-19 | Generalized tool-specific editing rules and removed internal work planning from the public governance document. |
 | 0.4 | 2026-07-19 | Established CC BY-NC-SA 4.0 for original LDS documentation and defined the boundary for Square Enix and other third-party materials. |
+| 0.5 | 2026-07-19 | Defined article and maintainer roles, standardized document terminology, restored Design Principles to the responsibility model, and separated governance from the improvement cycle. |
