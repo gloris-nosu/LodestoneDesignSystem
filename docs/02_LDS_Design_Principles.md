@@ -1,7 +1,7 @@
 ---
 title: LDS Design Principles
 document_id: LDS-02
-version: 0.2
+version: 0.3
 status: Draft
 last_updated: 2026-07-19
 owner: Lodestone Design System
@@ -13,10 +13,12 @@ owner: Lodestone Design System
 
 本書は、Lodestone Design System（LDS）における設計判断の基準を定める。
 
-`00_LDS_Project_Overview.md` がLDSの全体像を示し、
-`01_LDS_Governance.md` が文書管理と変更手続きを定め、
-`03_LDS_Editorial_Methodology.md` が具体的な編集手順を扱うのに対し、
-本書はその中間に位置する。
+[`00_LDS_Project_Overview.md`](00_LDS_Project_Overview.md) がLDSの全体像を示し、
+[`01_LDS_Governance.md`](01_LDS_Governance.md) が文書管理と変更手続きを定め、
+[`03_LDS_Editorial_Methodology.md`](03_LDS_Editorial_Methodology.md) が具体的な編集手順を扱うのに対し、
+本書は設計案を評価し、複数の選択肢から判断するための価値基準を扱う。
+
+具体的な編集順序、Lodestone向け記法、文書管理上の手続きは本書で定めない。
 
 本書が扱うのは、次の問いである。
 
@@ -91,30 +93,13 @@ LDSでは、次の順序を原則として優先する。
 
 ## 5. 原則2：論理構造を先に設計する
 
-LDSでは、見た目より先に論理を整理する。
-
-標準順序：
-
-```text
-論理構造
-↓
-段落
-↓
-見出し
-↓
-文字サイズ
-↓
-太字
-↓
-色
-↓
-折り畳み
-↓
-実画面確認
-```
+LDSでは、見た目より先に論理構造と情報の役割を整理する。
 
 色やサイズから作業を始めると、
 本来の情報階層と視覚階層がずれる可能性が高い。
+
+具体的な編集順序と各段階の完了条件は、
+[`03_LDS_Editorial_Methodology.md`](03_LDS_Editorial_Methodology.md) が定める。
 
 ---
 
@@ -124,15 +109,13 @@ LDSでは、色・サイズ・太字・余白に役割を与える。
 
 ### 6.1 色
 
-色は重要度ではなく、情報の種類を表す。
+色は情報の役割を表すために使い、重要度だけを理由に選ばない。
 
-例：
+事実、他者の主張、記事著者の分析、結論、章構造など、
+区別すべき情報の役割を先に定める。
 
-- 緑：事実・仕様・制度
-- 紫：他者の主張・引用
-- 水色：筆者の分析
-- 暖色黄：結論
-- シアン：章構造
+具体的な色との対応と適用手順は、
+[`03_LDS_Editorial_Methodology.md`](03_LDS_Editorial_Methodology.md) が定める。
 
 ### 6.2 文字サイズ
 
@@ -161,9 +144,9 @@ LDSでは、意味と表現の対応を記事内で統一する。
 
 例：
 
-- 他者の主張は常に紫
-- 結論は常に暖色黄
-- 章見出しは同じサイズと色
+- 他者の主張には同じ色の役割を適用する
+- 結論には同じ視覚表現を適用する
+- 章見出しは同じサイズと色を使う
 - 同階層の見出しは同じ書式
 - 補足は同じ弱さで表示
 
@@ -358,8 +341,9 @@ LDSで推奨されるとは限らない。
 - 長い罫線
 - 連続した強調
 
-技術仕様は `04_LDS_Lodestone_Authoring_Reference.md`、
-推奨設計は本書および `03_LDS_Editorial_Methodology.md` が扱う。
+技術仕様は [`04_LDS_Lodestone_Authoring_Reference.md`](04_LDS_Lodestone_Authoring_Reference.md)、
+推奨設計は本書および
+[`03_LDS_Editorial_Methodology.md`](03_LDS_Editorial_Methodology.md) が扱う。
 
 ---
 
@@ -370,10 +354,11 @@ Lodestoneは、一般的なWebページより表現力が限られる。
 LDSでは、この制約を欠点として扱うだけではなく、
 設計判断を明確にする資源として扱う。
 
-制約例：
+[`04_LDS_Lodestone_Authoring_Reference.md`](04_LDS_Lodestone_Authoring_Reference.md) で
+確認対象とする制約例：
 
 - 任意CSSが使えない
-- Markdownではない
+- 一般的なMarkdownとして扱わない
 - 利用可能なタグが限定される
 - 端末差がある
 - 文字数上限がある
@@ -530,26 +515,11 @@ Lodestone上のレンダリングを基準とする。
 
 LDSは、単一の理論から完成するものではない。
 
-次の循環で成熟させる。
+設計判断は、実装、実画面確認、Case Studyを通じて検証し、
+一度うまくいった表現を即座に普遍的ルールへ昇格させない。
 
-```text
-仮説
-↓
-実装
-↓
-実画面確認
-↓
-Case Study
-↓
-一般化
-↓
-LDS本体更新
-```
-
-一度うまくいった表現を、
-即座に普遍的ルールへ昇格させない。
-
-複数記事で再現できるか確認する。
+標準への採用、証拠の扱い、Status変更は、
+[`01_LDS_Governance.md`](01_LDS_Governance.md) に従う。
 
 ---
 
@@ -598,9 +568,9 @@ LDSでは、例外をルール違反として扱うのではなく、
 
 ---
 
-## 23. 原則20：著者の声を保持する
+## 23. 原則20：記事著者の声を保持する
 
-LDSは著者の文章を均質化するためのものではない。
+LDSは記事著者の文章を均質化するためのものではない。
 
 保持すべきもの：
 
@@ -612,27 +582,28 @@ LDSは著者の文章を均質化するためのものではない。
 - 個人的な視点
 - 結論
 
-編集支援ツールやテンプレートは、
-著者の声を消すのではなく、
+編集者・編集支援やテンプレートは、
+記事著者の声を消すのではなく、
 伝わりやすくするために使う。
 
 ---
 
-## 24. 設計判断の優先順位
+## 24. 設計判断チェック
 
 複数の案で迷った場合は、
-次の順序で判断する。
+第3章の優先順位に照らして次を確認する。
 
-1. 内容は正確か
-2. 論理が追えるか
-3. 誤読しにくいか
-4. 見出しだけで概要が分かるか
-5. 情報の役割が区別できるか
-6. 強調が過剰でないか
-7. 端末差に耐えるか
-8. 再利用できるか
-9. 実画面で読みやすいか
-10. 美しいか
+- 内容は正確か
+- 論理が追えるか
+- 誤読しにくいか
+- 見出しだけで概要が分かるか
+- 情報の役割が区別できるか
+- 強調が過剰でないか
+- 端末差に耐えるか
+- 実画面で読みやすいか
+- 同じ意味へ一貫した表現を使っているか
+- 他の記事や部品へ再利用できるか
+- 美観が上位の価値を損なっていないか
 
 ---
 
@@ -661,7 +632,7 @@ LDSの最小適用は、次の四つとする。
 - 結論が見つけやすいか
 - 補足が本筋を妨げていないか
 - 端末差で意味が失われないか
-- 著者の声が残っているか
+- 記事著者の声が残っているか
 - 実画面で疲れないか
 - LDSの部品として再利用できるか
 
@@ -669,10 +640,10 @@ LDSの最小適用は、次の四つとする。
 
 ## 27. 関連文書
 
-- `00_LDS_Project_Overview.md`
-- `01_LDS_Governance.md`
-- `03_LDS_Editorial_Methodology.md`
-- `04_LDS_Lodestone_Authoring_Reference.md`
+- [`00_LDS_Project_Overview.md`](00_LDS_Project_Overview.md)
+- [`01_LDS_Governance.md`](01_LDS_Governance.md)
+- [`03_LDS_Editorial_Methodology.md`](03_LDS_Editorial_Methodology.md)
+- [`04_LDS_Lodestone_Authoring_Reference.md`](04_LDS_Lodestone_Authoring_Reference.md)
 
 本書は設計判断の原則を扱う。
 
@@ -695,7 +666,7 @@ LDSにおける良い設計とは、
 - 論証を追える
 - 意味を誤認しない
 - 必要な深さで読める
-- 著者の声が保たれる
+- 記事著者の声が保たれる
 
 記事を作ることである。
 
@@ -707,3 +678,4 @@ LDSにおける良い設計とは、
 |---|---|---|
 | 0.1 | 2026-07-19 | Initial draft. Defined LDS design priorities, visual semantics, emphasis limits, scanning and close-reading support, accessibility, device resilience, component reuse, and authorial voice preservation. |
 | 0.2 | 2026-07-19 | Generalized tool-specific language for publication readiness. |
+| 0.3 | 2026-07-19 | Consolidated design priorities, delegated editorial workflow and color application to LDS-03, aligned role terminology with Governance, and clarified evidence adoption boundaries. |
