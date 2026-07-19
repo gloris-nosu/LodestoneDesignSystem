@@ -1,0 +1,772 @@
+---
+title: LDS Governance
+document_id: LDS-01
+version: 0.3
+status: Draft
+last_updated: 2026-07-19
+owner: Lodestone Design System
+---
+
+# LDS Governance
+
+## 1. 文書の目的
+
+本書は、Lodestone Design System（LDS）を構成する文書・検証記録・テンプレート・事例研究を、
+一貫した規則で作成、更新、参照、廃止するための管理方針を定める。
+
+LDSの技術仕様は `04_LDS_Lodestone_Authoring_Reference.md`、
+編集方法論は `03_LDS_Editorial_Methodology.md` が扱う。
+
+本書が扱うのは、次の問いである。
+
+> LDSの正本はどこにあるか  
+> 文書をどの名前で管理するか  
+> 変更をどう記録するか  
+> 何を確定仕様として扱うか  
+> 実験結果をどの段階で本体へ反映するか
+
+---
+
+## 2. 適用範囲
+
+本書は、LDSプロジェクト内の次の成果物に適用する。
+
+- プロジェクト概要
+- ガバナンス文書
+- 編集方法論
+- Lodestone技術リファレンス
+- デザイン原則
+- コンポーネント仕様
+- 記事テンプレート
+- 実機検証記録
+- Case Study
+- 参考記事評価
+- 変更履歴
+- 補助データ
+- スクリーンショット
+
+対象外：
+
+- 公開済みLodestone日記そのもの
+- 個々の記事の主張内容
+- FINAL FANTASY XIV運営の公式仕様管理
+- GitHubアカウント自体の管理規定
+
+---
+
+## 3. 正本
+
+### 3.1 正本の所在
+
+LDSの内容上の正本は、Gitリポジトリ内のMarkdownファイルとする。
+
+既存ファイルを直接編集し、別形式のコピーを正本として並立させない。
+
+### 3.2 GitとGitHub
+
+ローカルGit作業フォルダーを編集環境として使用する。
+
+GitHubは、次の情報を管理する正本とする。
+
+- commit履歴
+- 差分
+- branchと共有状態
+- push済みの版
+
+Google Drive上のコピーは正本として扱わない。
+一時ファイル、書き出しファイル、他サービス上のコピーも同様とする。
+
+### 3.3 公開記事との関係
+
+公開済みLodestone記事は、LDS本体の正本ではない。
+
+公開記事は次のいずれかとして扱う。
+
+- 適用例
+- 検証対象
+- Case Study
+- 実画面上の証拠
+
+---
+
+## 4. 文書IDとファイル名
+
+### 4.1 基本形式
+
+LDSの主要文書は、次の形式で命名する。
+
+```text
+NN_LDS_Document_Name.md
+```
+
+例：
+
+```text
+00_LDS_Project_Overview.md
+01_LDS_Governance.md
+03_LDS_Editorial_Methodology.md
+04_LDS_Lodestone_Authoring_Reference.md
+```
+
+### 4.2 番号
+
+先頭番号は、表示順と論理階層を示す。
+
+原則：
+
+- `00`：プロジェクト概要
+- `01`：ガバナンス
+- `02`：設計原則
+- `03`：編集方法論
+- `04`：Lodestone技術リファレンス
+- `05`以降：詳細仕様、コンポーネント、テンプレート、検証文書
+
+番号は内容の依存関係を優先して決める。
+
+### 4.3 文書ID
+
+各主要文書にはYAMLフロントマターで文書IDを付与する。
+
+```yaml
+document_id: LDS-01
+```
+
+規則：
+
+- ファイル番号と文書IDを一致させる
+- 文書IDは原則変更しない
+- ファイル名変更後も文書IDを維持する
+- 分割した場合は新しいIDを付与する
+- 統合した場合も履歴に旧IDを記録する
+
+### 4.4 ファイル名の安定性
+
+ファイル名は、正本として参照されるURLやリンクの安定性を考慮し、
+頻繁に変更しない。
+
+変更が必要な例：
+
+- 内容と名称が明確に不一致
+- 番号体系の誤り
+- 重大なスペルミス
+- 文書の役割変更
+
+単なる表現の好みでは変更しない。
+
+---
+
+## 5. 文書状態
+
+各文書は、次の状態のいずれかを持つ。
+
+| Status | 意味 |
+|---|---|
+| Draft | 作成・検討中 |
+| Review | 内容確認中 |
+| Stable | 現行の標準として利用可能 |
+| Experimental | 検証目的の暫定仕様 |
+| Deprecated | 新規利用を推奨しない |
+| Archived | 履歴保存のみ |
+| Superseded | 別文書に置き換え済み |
+
+### 5.1 Draft
+
+- 未確定の内容を含む
+- 構成変更があり得る
+- 他文書から参照する場合は暫定であることを示す
+
+### 5.2 Review
+
+- 初稿が完成している
+- 内容、整合性、証拠、用語を確認する段階
+- 大幅な追加より、修正と確認を優先する
+
+### 5.3 Stable
+
+- LDSの現行標準として使用できる
+- 主要な未検証事項が明示されている
+- 他文書との重大な矛盾がない
+- 変更履歴が記録されている
+
+### 5.4 Experimental
+
+- 実験的なコンポーネントや手法
+- 本番記事で使う場合は検証前提
+- 成功しても自動的にStableへ昇格しない
+
+### 5.5 Deprecated
+
+- 過去には有効だった
+- 現在は新規利用を推奨しない
+- 代替先を記載する
+
+### 5.6 Archived / Superseded
+
+- `Archived`：歴史的記録として保存
+- `Superseded`：後継文書が存在する
+
+削除ではなく、原則として履歴を残す。
+
+---
+
+## 6. バージョン管理
+
+### 6.1 バージョン形式
+
+文書バージョンは次の形式とする。
+
+```text
+MAJOR.MINOR
+```
+
+例：
+
+```text
+0.1
+0.2
+1.0
+1.1
+```
+
+### 6.2 0.x
+
+`0.x` は設計中・運用確立前を示す。
+
+- 構成変更が可能
+- 用語変更が可能
+- 文書分割・統合が可能
+
+### 6.3 1.0
+
+次を満たした文書は `1.0` 候補とする。
+
+- 目的と適用範囲が明確
+- 用語が整理済み
+- 主要規則が確定
+- 実運用で検証済み
+- 重大な未解決事項が明示済み
+- 関連文書との整合性確認済み
+
+### 6.4 MAJOR更新
+
+次の場合はMAJORを上げる。
+
+- 文書の責務が大きく変わる
+- 既存ルールとの互換性が失われる
+- 大規模な構成変更
+- 用語体系の全面変更
+- 適用方法が変わる
+
+### 6.5 MINOR更新
+
+次の場合はMINORを上げる。
+
+- 新しい節を追加
+- 新しいルールを追加
+- 検証結果を反映
+- 既存規則を明確化
+- 例や表を追加
+- 軽微な構成整理
+
+誤字修正のみの場合は、
+必要に応じてバージョンを維持してよい。
+
+---
+
+## 7. 更新履歴
+
+各主要文書の末尾に、Revision Historyを置く。
+
+推奨形式：
+
+```markdown
+## Revision History
+
+| Version | Date | Changes |
+|---|---|---|
+| 0.1 | 2026-07-19 | Initial draft. |
+```
+
+変更履歴には、単なる「更新」ではなく、
+何を変更したかを記載する。
+
+良い例：
+
+```text
+Added evidence status definitions and verification workflow.
+```
+
+悪い例：
+
+```text
+Updated document.
+```
+
+---
+
+## 8. 変更の分類
+
+変更は次のいずれかに分類する。
+
+### 8.1 Editorial Change
+
+- 誤字修正
+- 表現の明確化
+- 見出し調整
+- 重複除去
+- 内容の意味を変えない整理
+
+### 8.2 Specification Change
+
+- 新規ルール
+- 既存ルール変更
+- 技術仕様の更新
+- 状態区分の変更
+- 推奨手法の変更
+
+### 8.3 Evidence Change
+
+- 実機検証結果
+- 公式情報の追加
+- 参考記事の追加
+- 検証状態の昇格・降格
+
+### 8.4 Structural Change
+
+- 文書分割
+- 文書統合
+- ファイル名変更
+- 文書ID追加
+- 章構成の大幅変更
+
+---
+
+## 9. 証拠と確定ルール
+
+### 9.1 証拠区分
+
+Lodestone技術仕様については、
+`04_LDS_Lodestone_Authoring_Reference.md` の証拠区分を使用する。
+
+- Official
+- Verified
+- Observed
+- Community
+- Provisional
+- Unknown
+- Deprecated
+
+### 9.2 方法論への採用条件
+
+LDSの標準ルールとして採用する場合は、
+原則として次のいずれかを満たす。
+
+- 公式仕様である
+- LDS実機検証で再現できる
+- 複数のCase Studyで有効性が確認できる
+- 明確な目的と制約が説明できる
+
+単一の参考記事で使われているだけでは、
+LDS標準へ自動採用しない。
+
+### 9.3 観測と推奨の分離
+
+次を区別する。
+
+- Lodestoneで可能である
+- LDSで推奨する
+- 特定記事で有効だった
+- 実験中である
+
+技術的に可能でも、LDSで推奨しない場合がある。
+
+---
+
+## 10. 変更ワークフロー
+
+### 10.1 標準フロー
+
+```text
+Issue / Observation
+↓
+Draft Change
+↓
+Evidence Check
+↓
+Cross-document Review
+↓
+Practical Test
+↓
+Revision History Update
+↓
+Status Decision
+↓
+Git差分確認
+↓
+Commit / Push
+```
+
+### 10.2 Issue / Observation
+
+変更の起点：
+
+- 実画面で問題を発見
+- 新しいLodestone仕様を確認
+- 既存文書間に矛盾
+- Case Studyから知見を抽出
+- 新しい表現手法を発見
+- ユーザーが改善案を提示
+
+### 10.3 Evidence Check
+
+確認する事項：
+
+- 公式情報か
+- 実機確認済みか
+- 単一記事だけの観測か
+- 古い情報ではないか
+- PC／スマートフォン差があるか
+- 再現条件が明確か
+
+### 10.4 Cross-document Review
+
+最低限、次の整合性を確認する。
+
+- Project Overview
+- Governance
+- Editorial Methodology
+- Lodestone Authoring Reference
+- 関連コンポーネント仕様
+- 関連Case Study
+
+### 10.5 Practical Test
+
+デザインルールは、可能であればLodestone下書きまたは公開記事で確認する。
+
+確認例：
+
+- 読みやすさ
+- 色
+- 折り返し
+- 空行
+- スマートフォン表示
+- タグの動作
+- 見出し階層
+- 折り畳み
+
+### 10.6 Git差分と履歴
+
+変更を履歴へ反映する前に次を行う。
+
+- ファイル名を確認
+- YAMLメタデータ更新
+- バージョン更新
+- `last_updated` 更新
+- Revision History更新
+- 関連文書の参照先確認
+- Git差分とcommit対象の確認
+
+commitとpushは、必要な確認が完了した後に行う。
+
+---
+
+## 11. 文書間の責務
+
+### 11.1 Project Overview
+
+```text
+00_LDS_Project_Overview.md
+```
+
+扱う内容：
+
+- LDSの目的
+- 全体像
+- 基本理念
+- 主要成果物
+- プロジェクトの入口
+
+詳細ルールは持たせない。
+
+### 11.2 Governance
+
+```text
+01_LDS_Governance.md
+```
+
+扱う内容：
+
+- 正本
+- 命名
+- 状態
+- バージョン
+- 変更
+- 証拠管理
+- 文書ライフサイクル
+
+### 11.3 Editorial Methodology
+
+```text
+03_LDS_Editorial_Methodology.md
+```
+
+扱う内容：
+
+- 編集手順
+- 情報分類
+- 視線設計
+- Typography
+- Color
+- Spacing
+- Folding
+- 品質評価
+
+### 11.4 Lodestone Authoring Reference
+
+```text
+04_LDS_Lodestone_Authoring_Reference.md
+```
+
+扱う内容：
+
+- Lodestoneで可能なこと
+- タグ
+- UI機能
+- 制約
+- 実機検証
+- 技術的事実
+
+「何を推奨するか」ではなく、
+「何ができるか」を主に扱う。
+
+---
+
+## 12. Case Study
+
+### 12.1 目的
+
+Case Studyは、
+LDSルールを実際の記事へ適用した記録である。
+
+単なる完成記事の保存ではなく、
+判断と結果を残す。
+
+### 12.2 必須項目
+
+- Case Study ID
+- 対象記事
+- 日付
+- 適用前の問題
+- 採用したLDSルール
+- 実装内容
+- 実画面結果
+- 問題点
+- 修正履歴
+- LDS本体へ反映する知見
+- 証拠画像
+
+### 12.3 昇格条件
+
+Case Studyの知見をLDS本体へ反映する場合は、
+次を確認する。
+
+- 他の記事でも再利用できるか
+- 特定テーマに依存しすぎていないか
+- 読みやすさが実際に改善したか
+- 既存ルールと矛盾しないか
+- 技術的に安定しているか
+
+---
+
+## 13. 実験的コンポーネント
+
+新しいコンポーネントは、
+最初からStableとして扱わない。
+
+推奨フロー：
+
+```text
+Idea
+↓
+Experimental Spec
+↓
+Test Article
+↓
+Case Study
+↓
+Review
+↓
+Stable または Rejected
+```
+
+Rejectedになった場合も、
+理由を記録する。
+
+例：
+
+- 色が強すぎた
+- スマートフォンで崩れた
+- 文章構造を誤認させた
+- タグが不安定だった
+- 再利用性がなかった
+
+---
+
+## 14. 廃止と置換
+
+### 14.1 廃止条件
+
+- Lodestone仕様変更
+- より良い手法への置換
+- アクセシビリティ上の問題
+- 読者テストで悪影響
+- 文書間の重複
+- 実装不可能
+
+### 14.2 廃止時の記録
+
+Deprecated文書またはルールには、次を記載する。
+
+- 廃止理由
+- 廃止日
+- 代替先
+- 影響範囲
+- 過去記事への扱い
+
+### 14.3 削除
+
+原則として即時削除しない。
+
+削除候補：
+
+- 完全な重複
+- 誤って作成された空ファイル
+- 機密情報
+- 法的・安全上の問題
+- 正本でない一時ファイル
+
+---
+
+## 15. 編集支援と自動化
+
+### 15.1 基本原則
+
+編集支援ツールや自動化は、LDS文書に対して次を行える。
+
+- 構成整理
+- 重複検出
+- 用語統一
+- 矛盾確認
+- 草稿作成
+- 差分提案
+- Revision History作成
+- Case Study整理
+- 技術仕様と方法論の分離
+
+### 15.2 禁止事項
+
+編集支援ツールや自動化は、根拠なく次を行わない。
+
+- 未確認仕様を確定扱い
+- 著者の意図を変更
+- 参考記事を公式仕様扱い
+- 文書状態をStableへ自動昇格
+- 証拠なしの最適値断定
+- 既存ルールを黙って変更
+
+### 15.3 直接更新
+
+編集支援ツールや自動化がMarkdownを直接更新する場合は、
+変更対象と目的を明確にする。
+
+ユーザーの未commit変更を保全し、
+無関係な差分を変更しない。
+
+大規模変更では、
+更新前に草稿または差分を確認する。
+
+軽微な修正では、
+直接更新後に変更内容を報告してよい。
+
+---
+
+## 16. セキュリティと共有
+
+### 16.1 リポジトリアクセス
+
+GitHubリポジトリの公開範囲と書き込み権限は、
+所有者が必要性を確認して設定する。
+
+- collaboratorは必要最小限とする
+- 不特定多数へ書き込み権限を与えない
+- 公開範囲を変更する場合は、機密情報が含まれないことを確認する
+- 自動化されたcommitやpushには、所有者の明示的な承認を必要とする
+
+### 16.2 機密情報
+
+LDS文書に次を含めない。
+
+- アカウント認証情報
+- 非公開個人情報
+- APIキー
+- セッショントークン
+- 非公開メールアドレス
+- 無許可の第三者情報
+
+---
+
+## 17. 品質確認チェックリスト
+
+文書更新前に確認する。
+
+- [ ] 文書の目的と責務に合っている
+- [ ] ファイル名と文書IDが一致している
+- [ ] YAMLメタデータが更新されている
+- [ ] Statusが妥当
+- [ ] Versionが妥当
+- [ ] `last_updated` が更新されている
+- [ ] Revision Historyがある
+- [ ] 技術的事実と推奨が分離されている
+- [ ] 証拠区分が適切
+- [ ] 他文書と矛盾していない
+- [ ] 重複が過剰でない
+- [ ] 用語が統一されている
+- [ ] 未検証事項が明示されている
+- [ ] Git差分とcommit対象を確認している
+
+---
+
+## 18. 運用方針
+
+LDSは、次の循環で成熟させる。
+
+```text
+Platform Specification
+↓
+Governance
+↓
+Editorial Methodology
+↓
+Component Design
+↓
+Article Application
+↓
+Visual Verification
+↓
+Case Study
+↓
+System Revision
+```
+
+LDSは固定された完成品ではなく、
+実際の記事作成と検証を通じて更新される設計システムである。
+
+---
+
+## 19. Revision History
+
+| Version | Date | Changes |
+|---|---|---|
+| 0.1 | 2026-07-19 | Initial governance draft. Defined source of truth, naming, status, versioning, evidence, change workflow, Case Study lifecycle, assisted editing, and security policy. |
+| 0.2 | 2026-07-19 | Replaced the former Google Drive source-of-truth model with repository Markdown and Git/GitHub history management. Updated workflow, assisted editing, access, and quality checks accordingly. |
+| 0.3 | 2026-07-19 | Generalized tool-specific editing rules and removed internal work planning from the public governance document. |
