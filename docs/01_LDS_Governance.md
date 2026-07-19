@@ -1,7 +1,7 @@
 ---
 title: LDS Governance
 document_id: LDS-01
-version: 0.5
+version: 0.6
 status: Draft
 last_updated: 2026-07-19
 owner: Lodestone Design System
@@ -381,16 +381,26 @@ Updated document.
 
 ### 9.1 証拠区分
 
-Lodestone技術仕様については、
-[`04_LDS_Lodestone_Authoring_Reference.md`](04_LDS_Lodestone_Authoring_Reference.md)の証拠区分を使用する。
+Lodestone技術仕様と設計検証には、次のEvidence区分を使用する。
+文書ライフサイクルの `Status` と区別するため、技術情報には `Evidence` と記載する。
 
-- Official
-- Verified
-- Observed
-- Community
-- Provisional
-- Unknown
-- Deprecated
+| Evidence | 意味 |
+|---|---|
+| Official | スクウェア・エニックスの公式情報が対象の事実を直接裏付けている |
+| Verified | LDSが実機で再現し、確認日と確認環境を記録している |
+| Observed | 公開中のLodestone記事または表示結果で観測したが、再現条件を確定していない |
+| Community | ユーザー記事などの二次情報だけで確認している |
+| Provisional | 複数情報から妥当と推定するが、直接確認していない |
+| Unknown | 判断に十分な証拠がない、または現在の仕様が不明である |
+
+古さ、適用範囲、再検証の必要性、廃止情報はEvidenceへ混在させず、
+Verification noteとして記録する。
+
+同じ機能でも、機能の存在、正確な構文、表示挙動でEvidenceが異なる場合は、
+項目を分けて記録する。
+
+[`04_LDS_Lodestone_Authoring_Reference.md`](04_LDS_Lodestone_Authoring_Reference.md) は、
+この区分をLodestoneの技術情報へ適用する。
 
 ### 9.2 方法論への採用条件
 
@@ -852,3 +862,4 @@ LDSは固定された完成品ではなく、
 | 0.3 | 2026-07-19 | Generalized tool-specific editing rules and removed internal work planning from the public governance document. |
 | 0.4 | 2026-07-19 | Established CC BY-NC-SA 4.0 for original LDS documentation and defined the boundary for Square Enix and other third-party materials. |
 | 0.5 | 2026-07-19 | Defined article and maintainer roles, standardized document terminology, restored Design Principles to the responsibility model, and separated governance from the improvement cycle. |
+| 0.6 | 2026-07-19 | Established Governance as the canonical owner of Evidence categories, separated technical Evidence from document Status, and required verification notes and aspect-specific evidence. |
