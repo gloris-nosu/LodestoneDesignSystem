@@ -1,7 +1,7 @@
 ---
 title: LDS Lodestone Authoring Reference
 document_id: LDS-04
-version: 0.11
+version: 0.12
 status: Review
 last_updated: 2026-07-30
 owner: Lodestone Design System
@@ -436,7 +436,11 @@ BBCode、DB item code、画像codeは、
 
 **Behavior evidence:** Verified
 
-**Verification note:** 共通検証環境で、UIの4段階と保存後の表示サイズを確認した。任意値は対象外。
+**Verification note:** 2026-07-30、Windows PC、Lodestone PC版、
+リッチ編集モード、背景黒の下書きで確認した。
+UIの4段階と代表的な任意値について、
+確認画面、保存後表示、再編集時の構文保持を検証した。
+Full HDと4Kの物理displayで、対象markerの識別と本文layoutを確認した。
 
 公式UIには次の4段階がある。
 
@@ -462,21 +466,33 @@ BBCode、DB item code、画像codeは、
 
 ### 6.5.1 任意サイズ値
 
-公開中のLodestone記事では、
-`size=16` や `size=20` などUIプリセット以外の値が使用されている。
+**Syntax evidence:** Verified
 
-**Syntax evidence:** Observed
+**Behavior evidence:** Verified
 
-ただし、使用可能な最小値・最大値・整数以外の扱いは未検証。
+UIプリセット以外の値を手動入力し、
+検証した代表値では次の結果になった。
 
-### 6.5.2 検証項目
+| 入力値 | 保存後のfont size |
+|---|---:|
+| 0、1、8、9 | 9px |
+| 10、11、12、17、18、19、31、32 | 入力値と同じpx |
+| 33、64、99 | 32px |
 
-- 許容される最小値
-- 許容される最大値
-- 0、負数、小数
-- 範囲外値の補正
+0から99までの全整数を総当たりした結果ではない。
+検証した非負整数では9pxから32pxの範囲へ収まり、
+下限または上限を超えた代表値は境界値へ補正された。
+
+`-1`、`1.5`、`abc`、空値では、
+保存後の要素に`font-size`が付与されず、
+検証環境の既定文字サイズを継承した。
+
+### 6.5.2 未検証
+
+- 100以上の極端な値
+- 未測定の整数値すべて
 - 長い日本語見出しの折り返し
-- PC／スマートフォン表示差
+- スマートフォン表示
 - 行間への影響
 
 ---
@@ -489,11 +505,12 @@ BBCode、DB item code、画像codeは、
 
 **Behavior evidence:** Verified
 
-**Verification note:** 共通検証環境で、UI上に42色のパレットが存在することを確認した。
-3色の生成構文と、そのうち1色の保存後表示を検証した。
-Phase 3共通検証環境では、`#FF99CC` を非表示領域と
-3階層の正常な入れ子で保存し、背景黒での表示を確認した。
-全パレット値と背景ごとのコントラストは未検証。
+**Verification note:** 2026-07-30、Windows PC、Lodestone PC版、
+リッチ編集モード、背景黒の下書きで確認した。
+現在のUI上に42色のpaletteが存在する。
+代表値について確認画面、保存後表示、再編集時の構文保持を検証し、
+Full HDと4Kの物理displayで表示を確認した。
+全palette値と背景ごとのcontrastは未検証。
 
 検証済み構文例：
 
@@ -501,17 +518,30 @@ Phase 3共通検証環境では、`#FF99CC` を非表示領域と
 [color=#FF99CC]本文[/color]
 ```
 
-検証した3色では、6桁16進RGB形式のカラーコードが生成された。
-UIパレット外の値を同形式で指定できる範囲は未検証。
+UIで検証した代表色は、6桁16進RGB形式のcolor codeを生成した。
+手動入力した値は次の結果になった。
 
-### 6.6.1 検証項目
+| 入力形式 | 例 | 保存後表示 |
+|---|---|---|
+| 6桁HEX・大文字 | `#FF99CC` | 適用 |
+| 6桁HEX・小文字 | `#ff99cc` | 適用 |
+| 3桁HEX | `#F9C` | 適用 |
+| 8桁HEX | `#FF99CCFF` | 適用 |
+| 色名 | `red` | 適用 |
+| `#`なしHEX | `FF99CC` | inline値は保持するが、色は適用されない |
+| 不正HEX | `#GGGGGG` | inline値は保持するが、色は適用されない |
+| 空値 | なし | color styleを付与しない |
 
-- 3桁HEX
-- 6桁HEX
-- 大文字・小文字
-- `#` 省略
-- 色名指定
-- 不正値
+色が適用されないcaseでは、
+検証環境の背景黒で既定文字色を継承した。
+8桁HEXはalpha `FF`の1件だけを検証しており、
+半透明色の合成挙動は未確認である。
+
+### 6.6.1 未検証
+
+- すべてのCSS color形式と色名
+- 8桁HEXのalpha `FF`以外
+- 全42色の保存後表示
 - 実際の背景色とのコントラスト
 - リンク文字への適用
 - 既読リンクへの影響
@@ -565,10 +595,12 @@ Phase 3共通検証環境で確認した。
 
 **Behavior evidence:** Verified
 
-**Verification note:** 2026-07-30、Windows PC、Lodestone PC版、リッチ編集モード、
-背景白の下書きで、外部HTTPS URL 1件を確認した。
-保存後のリンク先と再編集時の構文は入力値と一致した。
-HTTP、Lodestone内部URL、日本語URLは未検証。
+**Verification note:** 2026-07-30、Windows PC、Lodestone PC版、
+リッチ編集モードの下書きで確認した。
+外部HTTPSに加えて、背景黒で外部HTTP、Lodestone内部HTTPS、
+literal日本語path / query、percent-encoded日本語path / queryを検証した。
+確認画面、保存後表示、再編集時の構文保持を確認し、
+Full HDと4Kの物理displayで表示を比較した。
 
 検証済み構文：
 
@@ -576,13 +608,21 @@ HTTP、Lodestone内部URL、日本語URLは未検証。
 [url=https://example.com]リンク文字列[/url]
 ```
 
-次を検証する。
+検証したURL種別の保存後結果：
 
-- `http`
-- Lodestone内部URL
-- 日本語URL
-- 外部リンク警告画面の有無
-- 投稿後の `rel` や新規タブ挙動
+| URL種別 | 保存後のhref | 外部link属性 |
+|---|---|---|
+| 外部HTTP | 入力値と一致 | `rel="nofollow noopener"` |
+| Lodestone内部HTTPS | 入力値と一致 | 付与なし |
+| literal日本語path / query | `javascript:void(0)` | 付与なし |
+| percent-encoded日本語path / query | 入力値と一致 | `rel="nofollow noopener"` |
+
+検証したlink要素に`target`属性はなかった。
+外部HTTP linkを操作すると、
+Lodestone外へ移動すること、対象URL、注意事項、
+「はい」「いいえ」を含む確認画面を表示した。
+「いいえ」で閉じたため、
+「はい」選択後のnavigationと新規tab挙動は未検証である。
 
 ### 7.2 URLだけを貼った場合の自動リンク
 
@@ -596,16 +636,23 @@ HTTP、Lodestone内部URL、日本語URLは未検証。
 リッチ編集モード、背景黒の下書きで確認した。
 286文字のHTTPS URLを装飾タグなしで入力すると自動的にリンク化され、
 再編集時は入力した生のURLが保持された。
+外部HTTP、Lodestone内部HTTPS、
+literal日本語path / query、percent-encoded日本語path / queryも、
+確認画面、保存後表示、再編集時保持を確認した。
 
 本文幅570pxでは4行へ折り返された。
 CSS viewport `1280×720`、`1920×1080`、`2560×1440` の3条件で、
 本文または文書全体の横方向オーバーフローは発生しなかった。
 
+追加検証では、外部HTTP、Lodestone内部HTTPS、
+percent-encoded日本語URLの全体が自動link化された。
+literal日本語URLはASCIIのURL部分だけをlink化し、
+後続の日本語path / queryをplain textとして残した。
+percent-encoded URLはFull HDと4Kの両方で本文幅内へ折り返され、
+記事本文の横方向overflowは発生しなかった。
+
 未検証：
 
-- HTTP URL
-- 日本語を含むURL
-- Lodestone内部URL
 - 末尾の句読点や括弧との境界
 - 複数URLの連続入力
 
@@ -1299,10 +1346,10 @@ LDSでの推奨または標準利用可否を示す一覧ではない。
 | 斜体 | `[i]本文[/i]` | Verified | 2026-07-30、PC版、背景白。フォント差とスマートフォン表示は未確認 |
 | 下線 | `[u]本文[/u]` | Verified | 2026-07-30、PC版、背景白 |
 | 取消線 | `[s]本文[/s]` | Verified | 2026-07-30、PC版、背景白 |
-| 文字サイズ | `[size=18]本文[/size]` | Verified | UIプリセットは10、12、18、32。任意値は未検証 |
-| 文字色 | `[color=#FF99CC]本文[/color]` | Verified | 42色中3色の構文と1色の背景白表示を検証 |
-| URLリンク | `[url=https://example.com]リンク[/url]` | Verified | 外部HTTPS URL 1件だけを検証 |
-| URL自動リンク | `https://example.com` | Verified | 装飾タグなしの長いHTTPS URLで保存、リンク化、折り返し、再編集時の保持を検証 |
+| 文字サイズ | `[size=18]本文[/size]` | Verified | UI値10、12、18、32と代表任意値を検証。確認した表示範囲は9pxから32px |
+| 文字色 | `[color=#FF99CC]本文[/color]` | Verified | 6桁・3桁・8桁HEX、大小文字、色名と代表的な無効値を背景黒で検証 |
+| URLリンク | `[url=https://example.com]リンク[/url]` | Verified | 外部HTTP / HTTPS、Lodestone内部URL、literal / percent-encoded日本語URLを検証 |
+| URL自動リンク | `https://example.com` | Verified | HTTP / HTTPS、内部URL、literal / percent-encoded日本語URLのlink化範囲と保持を検証 |
 | 左寄せ | `[left]本文[/left]` | Verified | PC版、背景黒でUI、保存後配置、再編集時の保持を検証 |
 | 中央寄せ | `[center]本文[/center]` | Verified | PC版、背景黒でUI、保存後配置、再編集時の保持を検証 |
 | 右寄せ | `[right]本文[/right]` | Verified | PC版、背景黒でUI、保存後配置、再編集時の保持を検証 |
@@ -1356,3 +1403,4 @@ LDSでの推奨または標準利用可否を示す一覧ではない。
 | 0.9 | 2026-07-30 | Verified current simple and rich editor surfaces, saved-mode retention and change-control absence, publication options and retained settings, and desktop editor layout coverage. |
 | 0.10 | 2026-07-30 | Verified current body counter semantics, raw markup counting, ASCII 10,000-character confirmation acceptance, and 10,001-character validation across both editor modes. |
 | 0.11 | 2026-07-30 | Verified current image-selection count and size boundaries, 1024 / 1025px PNG transformation behavior, and unused-image cleanup. |
+| 0.12 | 2026-07-30 | Verified representative size parameter boundaries, color value formats, HTTP and internal link behavior, Japanese URL handling, and saved display across Full HD and 4K physical displays. |
