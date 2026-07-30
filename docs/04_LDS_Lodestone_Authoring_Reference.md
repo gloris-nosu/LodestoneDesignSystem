@@ -1,7 +1,7 @@
 ---
 title: LDS Lodestone Authoring Reference
 document_id: LDS-04
-version: 0.8
+version: 0.9
 status: Review
 last_updated: 2026-07-30
 owner: Lodestone Design System
@@ -97,34 +97,83 @@ LDSのデザイン原則や編集方法論ではなく、
 物理Full HD環境の想定DPR `1`、色、精細度、OS描画品質は検証していない。
 スマートフォン版と背景白へも一般化しない。
 
+### 3.3 Phase 5共通検証環境
+
+本書で現在の編集モード、リッチ編集toolbar、公開範囲、
+保存後の編集モード保持を `Verified` とする場合は、
+個別に記載がない限り次の条件で確認した。
+
+- 確認日：2026-07-30
+- 環境：Windows PC、Lodestone PC版
+- 対象：新規日記作成画面、保存済み下書きと公開済み日記の再編集画面
+- 背景：リッチ編集のUI検証は黒。新規日記作成画面の既定値は白
+- CSS viewport：`1920×1079`、4Kディスプレイの150%表示相当となる
+  論理 `2560×1440`
+- device pixel ratio：約`1.58`
+- visual viewport scale：`1`
+
+両viewportでリッチ編集toolbarの16controlと公開範囲の5選択肢が表示され、
+toolbarと文書全体に横方向オーバーフローは発生しなかった。
+
+`1920×1079` は論理viewportの再現である。
+物理Full HD環境の想定DPR `1`、色、精細度、OS描画品質、
+スマートフォン版へは一般化しない。
+
 ---
 
 ## 4. 日記編集モード
 
-### 4.1 通常編集モード
+### 4.1 シンプル編集モード
 
-**Evidence:** Unknown
+**Feature evidence:** Verified
 
-通常編集モードの現在の機能範囲については、
-LDSとしてまだ体系的に実機確認していない。
+**Saved-mode behavior evidence:** Verified
 
-確認対象：
+**Verification note:** 3.3の環境で、新規作成画面と専用下書きの保存後を確認した。
 
-- 使用可能な文字装飾
-- 画像添付
-- 本文内画像挿入
-- 埋め込みコード
-- リッチ編集モードへの変更可否
-- PC版とスマートフォン版の差異
+現在の新規日記作成画面では、
+シンプル編集モードとリッチ編集モードを選択でき、
+既定値はシンプル編集モードである。
+
+シンプル編集モードでは、タイトル、画像選択、plain textarea、
+文字数counterが表示される。
+リッチ編集toolbarと背景色選択は表示されない。
+
+シンプル編集で保存した下書きは、
+再編集画面でもシンプル編集の入力領域を保持した。
+保存後の編集モード変更については4.4で扱う。
 
 ### 4.2 リッチ編集モード
 
-**Feature evidence:** Official
+**Current feature evidence:** Verified
 
-**Verification note:** 2026-07-30、PC版の現在の新規日記作成画面で機能一覧を実機確認した。
+**Historical feature evidence:** Official
+
+**Verification note:** 3.3の環境で、現在の新規日記作成画面に表示される
+全toolbar controlを実機確認した。
 
 Lodestoneには、文字装飾、リンク、非表示、画像挿入、動画挿入などを利用できる
 リッチ編集モードが存在する。
+
+現在のリッチ編集toolbarには次の16controlが表示される。
+
+- 文字サイズ小、中、大、極大
+- 文字色
+- 太字
+- 斜体
+- 下線
+- 取消線
+- 左に配置
+- 中央に配置
+- 右に配置
+- リンク
+- 隠す
+- 画像挿入
+- 動画挿入
+
+文字色paletteには42色が表示された。
+動画挿入はcontrolの存在だけを確認しており、
+正確な構文と保存後挙動は未検証である。
 
 公式の2015年1月20日更新情報では、
 新規日記作成時にリッチ編集モードを選択する仕様として案内されている。
@@ -160,21 +209,21 @@ LDSで改めて検証する必要がある。
 
 ### 4.4 編集モードの後変更
 
-**Feature evidence:** Community
+**Saved-mode behavior evidence:** Verified
 
-**Verification note:** 現在の公式仕様と実機挙動は未確認。
+**Conversion behavior evidence:** Unknown
 
-ユーザー記事には、
-新規作成時にリッチ編集モードを選択し、
-後から切り替えられない旨の報告がある。
+**Verification note:** 3.3の環境で、シンプル編集下書き1件、
+リッチ編集下書き1件、リッチ編集の公開済み日記2件を再編集して確認した。
 
-現在の公式仕様としては未確認。
+対象とした再編集画面では、
+保存時の編集モードが保持され、編集モード選択UIは表示されなかった。
+シンプル編集ではリッチ編集toolbarが表示されず、
+リッチ編集では16controlのtoolbarが表示された。
 
-検証項目：
-
-- 通常編集で保存した下書きをリッチ編集へ変更できるか
-- 公開済み日記をリッチ編集へ変更できるか
-- リッチ編集から通常編集へ戻せるか
+現在のUIでは別の編集モードへ変更するcontrolを確認できなかったため、
+変換時の警告、構文変換、内容保持または拒否の挙動は実行していない。
+UI外の操作や将来の仕様まで変更不能とは断定しない。
 
 ---
 
@@ -957,26 +1006,41 @@ Phase 3共通検証環境で正常な閉じ順序、
 
 ## 16. 日記の公開範囲
 
-### 16.1 フリーカンパニー限定
+### 16.1 現在の選択肢
 
-**Feature evidence:** Official
+**Current options evidence:** Verified
 
-**Verification note:** 現在利用可能な公開範囲は再検証が必要。
+**Historical FC-option evidence:** Official
+
+**Verification note:** 3.3の環境で、新規作成画面と保存済み記事の
+再編集画面を確認した。
 
 2015年の更新で、
 公開範囲に「フリーカンパニーのみ公開」が追加された。
 
-現在利用可能な公開範囲の全一覧は未整理。
-
-### 16.2 確認対象
+現在のLodestone PC版では、次の5種類を選択できる。
 
 - 公開
-- フレンド限定
-- フリーカンパニー限定
-- 非公開
+- フレンドのみ公開
+- フリーカンパニーのみ公開
+- PvPチームのみ公開
 - 下書き
-- その他グループ限定
-- 公開後の変更
+
+新規日記作成画面の既定値は「公開」である。
+UIでは「下書き」を自分のみ閲覧できる状態として説明している。
+
+### 16.2 設定保持と未検証範囲
+
+**Setting behavior evidence:** Verified
+
+保存済み下書きでは「下書き」、
+公開済み日記では「公開」が再編集画面でも保持され、
+どちらも16.1の5選択肢を表示した。
+
+次の挙動は未検証である。
+
+- フレンド、フリーカンパニー、PvPチームの第三者アカウントからの閲覧
+- 公開範囲を変更して保存した後のアクセス制御
 - 検索結果への反映
 - 共有URLへのアクセス挙動
 
@@ -1182,3 +1246,4 @@ LDSでの推奨または標準利用可否を示す一覧ではない。
 | 0.6 | 2026-07-30 | Verified current rich-editor syntax and saved-draft behavior for basic text decoration, UI size presets, representative color values, and one external HTTPS link. |
 | 0.7 | 2026-07-30 | Verified alignment syntax, line breaks, whitespace preservation, long-string wrapping, bare HTTPS URL auto-linking, and rule-character behavior across desktop viewport conditions. |
 | 0.8 | 2026-07-30 | Verified disclosure syntax and behavior, image insertion and saved display, DB item display behavior, and supported normal tag nesting across desktop viewport conditions. |
+| 0.9 | 2026-07-30 | Verified current simple and rich editor surfaces, saved-mode retention and change-control absence, publication options and retained settings, and desktop editor layout coverage. |
