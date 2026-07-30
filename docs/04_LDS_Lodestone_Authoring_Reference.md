@@ -1,7 +1,7 @@
 ---
 title: LDS Lodestone Authoring Reference
 document_id: LDS-04
-version: 0.10
+version: 0.11
 status: Review
 last_updated: 2026-07-30
 owner: Lodestone Design System
@@ -136,6 +136,28 @@ toolbarと文書全体に横方向オーバーフローは発生しなかった�
 
 最終保存または公開、スマートフォン版、
 タイトル、日記タグ、コメントの文字数境界へは一般化しない。
+
+### 3.5 Phase 7共通検証環境
+
+本書で現在の画像選択件数、1点あたりの容量、
+1024px付近の変換挙動を `Verified` とする場合は、
+個別に記載がない限り次の条件で確認した。
+
+- 確認日：2026-07-30
+- 環境：Windows PC、Lodestone PC版
+- 対象：新規日記作成画面の画像選択dialog、画像管理画面
+- 件数fixture：32×32pxの小容量PNG 11件
+- 容量fixture：30,000,000、30,000,001、
+  31,457,280、31,457,281 bytesのPNG
+- 変換fixture：1025×1025pxの不透明PNG 1件
+- 比較基準：Phase 3で保存した1024×576pxの不透明PNG
+- 永続的変更：変換fixture 1件だけをuploadし、
+  日記へ挿入せず、未使用を確認して削除
+
+件数と容量はfile selection段階だけを確認し、
+10件または30 MiBのserver upload受理を検証していない。
+スマートフォン版、GIF、透過PNG、異なる縦横比、
+外部画像へは一般化しない。
 
 ---
 
@@ -691,9 +713,13 @@ UIが生成した構文、保存後表示、元画像表示、
 
 **Upload UI evidence:** Verified
 
-**Verification note:** Phase 3共通検証環境で、
-現在の画像選択UIに表示された条件を記録した。
-上限値の境界と全形式の実動作は確認していない。
+**Client-side selection behavior evidence:** Verified
+
+**Transformation behavior evidence:** Verified
+
+**Verification note:** Phase 3とPhase 7の共通検証環境で、
+現在の表示条件、file selection境界、
+1024 / 1025pxの不透明PNGを確認した。
 
 UIには次が表示される。
 
@@ -702,6 +728,34 @@ UIには次が表示される。
 - 同時に10枚までアップロード可能
 - 一辺が1024pxを超える画像はリサイズし、JPEGへ変換
 - 外部画像参照機能
+
+file selectionの待機listは10件を保持した。
+11件目をOS file pickerで選択しても待機listへ追加せず、
+`10 / 10`を維持した。
+この時、画像選択controlは見た目上無効化されず、
+警告も表示しなかった。
+
+1点あたりのclient-side容量上限は30 MiBだった。
+31,457,280 bytesを受理し、
+31,457,281 bytesを待機件数と合計容量へ算入せず、
+次のmessageを表示した。
+
+> 画像は30MB以内にしてください。
+
+超過時はupload buttonを無効状態にした。
+約28.61 MiBは`29 MB`、30 MiBは`30 MB`と表示した。
+小容量file 9件の合計1,332 bytesと、
+10件の合計1,474 bytesは、どちらも`1 KB`と表示した。
+すべての容量に対する丸め規則は未検証である。
+
+1024×576pxの不透明PNGはPNGと寸法を保持した。
+1025×1025pxの不透明PNGは、
+1024×1024pxのJPEGへ変換された。
+変換後の元画像は51,303 bytesで、EXIFを持たなかった。
+
+変換検証で作成された画像は画像管理画面で未使用と表示され、
+既存の使用中画像と分離して削除できた。
+この結果を、日記本文が参照している画像の削除挙動へ一般化しない。
 
 検証時の画像選択ダイアログと投稿フォームでは、
 サムネイルを別途指定するUIを確認できなかった。
@@ -718,10 +772,10 @@ UIには次が表示される。
 
 ### 9.4 未確認事項
 
-- UI表示上限の境界値
+- 10件または30 MiBをまとめたserver upload受理
 - GIFのアップロードとアニメーション
 - 透過PNG
-- 一辺1024px超の実際のリサイズとJPEG変換
+- 異なる縦横比と、1pxを超えて大きい画像の変換寸法
 - アップロード後の圧縮品質
 - EXIF情報を含む画像の処理
 - 外部画像参照
@@ -1301,3 +1355,4 @@ LDSでの推奨または標準利用可否を示す一覧ではない。
 | 0.8 | 2026-07-30 | Verified disclosure syntax and behavior, image insertion and saved display, DB item display behavior, and supported normal tag nesting across desktop viewport conditions. |
 | 0.9 | 2026-07-30 | Verified current simple and rich editor surfaces, saved-mode retention and change-control absence, publication options and retained settings, and desktop editor layout coverage. |
 | 0.10 | 2026-07-30 | Verified current body counter semantics, raw markup counting, ASCII 10,000-character confirmation acceptance, and 10,001-character validation across both editor modes. |
+| 0.11 | 2026-07-30 | Verified current image-selection count and size boundaries, 1024 / 1025px PNG transformation behavior, and unused-image cleanup. |
