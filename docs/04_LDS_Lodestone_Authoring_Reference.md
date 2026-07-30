@@ -1,9 +1,9 @@
 ---
 title: LDS Lodestone Authoring Reference
 document_id: LDS-04
-version: 0.5
+version: 0.6
 status: Review
-last_updated: 2026-07-20
+last_updated: 2026-07-30
 owner: Lodestone Design System
 ---
 
@@ -97,6 +97,8 @@ LDSとしてまだ体系的に実機確認していない。
 
 **Feature evidence:** Official
 
+**Verification note:** 2026-07-30、PC版の現在の新規日記作成画面で機能一覧を実機確認した。
+
 Lodestoneには、文字装飾、リンク、非表示、画像挿入、動画挿入などを利用できる
 リッチ編集モードが存在する。
 
@@ -186,13 +188,30 @@ LDSで改めて検証する必要がある。
 
 ## 6. 対応文字装飾
 
+### 共通検証環境
+
+本章で `Verified` とする構文と挙動は、次の条件で確認した。
+
+- 確認日：2026-07-30
+- 環境：Windows PC、Lodestone PC版
+- 編集：リッチ編集モード
+- 背景：白
+- 方法：UIが生成した構文を記録し、下書き保存後の表示と再編集時の構文保持を確認
+
+スマートフォン版、背景黒での視覚的妥当性、複数段落、複合タグは、
+個別に記載がない限り未検証である。
+
 ### 6.1 太字
 
 **Feature evidence:** Official
 
-**Syntax evidence:** Observed
+**Syntax evidence:** Verified
 
-観測構文：
+**Behavior evidence:** Verified
+
+**Verification note:** 共通検証環境で、保存後に太字として表示され、再編集時も構文が保持された。
+
+検証済み構文：
 
 ```bbcode
 [b]本文[/b]
@@ -209,15 +228,19 @@ LDSで改めて検証する必要がある。
 
 **Feature evidence:** Official
 
-**Syntax evidence:** Unknown
+**Syntax evidence:** Verified
 
-構文候補：
+**Behavior evidence:** Verified
+
+**Verification note:** 共通検証環境で、保存後に斜体として表示され、再編集時も構文が保持された。
+
+検証済み構文：
 
 ```bbcode
 [i]本文[/i]
 ```
 
-日本語環境での視認性、フォント差、スマートフォン表示は未検証。
+フォント差、スマートフォン表示、背景黒での視認性は未検証。
 
 ---
 
@@ -225,9 +248,13 @@ LDSで改めて検証する必要がある。
 
 **Feature evidence:** Official
 
-**Syntax evidence:** Unknown
+**Syntax evidence:** Verified
 
-構文候補：
+**Behavior evidence:** Verified
+
+**Verification note:** 共通検証環境で、保存後に下線として表示され、再編集時も構文が保持された。
+
+検証済み構文：
 
 ```bbcode
 [u]本文[/u]
@@ -239,9 +266,13 @@ LDSで改めて検証する必要がある。
 
 **Feature evidence:** Official
 
-**Syntax evidence:** Unknown
+**Syntax evidence:** Verified
 
-構文候補：
+**Behavior evidence:** Verified
+
+**Verification note:** 共通検証環境で、保存後に取消線として表示され、再編集時も構文が保持された。
+
+検証済み構文：
 
 ```bbcode
 [s]本文[/s]
@@ -253,7 +284,11 @@ LDSで改めて検証する必要がある。
 
 **Feature evidence:** Official
 
-**Syntax evidence:** Observed
+**Syntax evidence:** Verified
+
+**Behavior evidence:** Verified
+
+**Verification note:** 共通検証環境で、UIの4段階と保存後の表示サイズを確認した。任意値は対象外。
 
 公式UIには次の4段階がある。
 
@@ -262,16 +297,16 @@ LDSで改めて検証する必要がある。
 - 中
 - 小
 
-ユーザー記事では、次の数値が報告されている。
+現在のUIと生成構文の対応は次の通り。
 
-| UI表記 | 報告された値 | Evidence |
+| UI表記 | 生成値 | Evidence |
 |---|---:|---|
-| 小 | 10 | Community |
-| 中 | 12 | Community |
-| 大 | 18 | Community |
-| 極大 | 32 | Community |
+| 小 | 10 | Verified |
+| 中 | 12 | Verified |
+| 大 | 18 | Verified |
+| 極大 | 32 | Verified |
 
-観測構文：
+検証済み構文例：
 
 ```bbcode
 [size=18]本文[/size]
@@ -302,15 +337,22 @@ LDSで改めて検証する必要がある。
 
 **Feature evidence:** Official
 
-**Syntax evidence:** Observed
+**Syntax evidence:** Verified
 
-観測構文：
+**Behavior evidence:** Verified
+
+**Verification note:** 共通検証環境で、UI上に42色のパレットが存在することを確認した。
+3色の生成構文と、そのうち1色の保存後表示を検証した。
+背景黒でのコントラストと、全パレット値は未検証。
+
+検証済み構文例：
 
 ```bbcode
-[color=#CBB8E8]本文[/color]
+[color=#FF99CC]本文[/color]
 ```
 
-16進RGB形式のカラーコード使用例が公開記事で確認できる。
+検証した3色では、6桁16進RGB形式のカラーコードが生成された。
+UIパレット外の値を同形式で指定できる範囲は未検証。
 
 ### 6.6.1 検証項目
 
@@ -356,9 +398,16 @@ LDSで改めて検証する必要がある。
 
 **Feature evidence:** Official
 
-**Syntax evidence:** Unknown
+**Syntax evidence:** Verified
 
-構文候補：
+**Behavior evidence:** Verified
+
+**Verification note:** 2026-07-30、Windows PC、Lodestone PC版、リッチ編集モード、
+背景白の下書きで、外部HTTPS URL 1件を確認した。
+保存後のリンク先と再編集時の構文は入力値と一致した。
+HTTP、Lodestone内部URL、長いURL、日本語URLは未検証。
+
+検証済み構文：
 
 ```bbcode
 [url=https://example.com]リンク文字列[/url]
@@ -366,7 +415,6 @@ LDSで改めて検証する必要がある。
 
 次を検証する。
 
-- `https`
 - `http`
 - Lodestone内部URL
 - 長いURL
@@ -918,13 +966,13 @@ LDSでの推奨または標準利用可否を示す一覧ではない。
 
 | 機能 | 構文例 | Syntax evidence | Verification note |
 |---|---|---|---|
-| 太字 | `[b]本文[/b]` | Observed | 複数段落と最大入れ子深度は未確認 |
-| 斜体 | `[i]本文[/i]` | Unknown | 機能の存在はOfficial |
-| 下線 | `[u]本文[/u]` | Unknown | 機能の存在はOfficial |
-| 取消線 | `[s]本文[/s]` | Unknown | 機能の存在はOfficial |
-| 文字サイズ | `[size=18]本文[/size]` | Observed | UIプリセット値との対応はCommunity |
-| 文字色 | `[color=#CBB8E8]本文[/color]` | Observed | HEX形式の許容範囲は未確認 |
-| URLリンク | `[url=https://example.com]リンク[/url]` | Unknown | 機能の存在はOfficial |
+| 太字 | `[b]本文[/b]` | Verified | 2026-07-30、PC版、背景白。複数段落と最大入れ子深度は未確認 |
+| 斜体 | `[i]本文[/i]` | Verified | 2026-07-30、PC版、背景白。フォント差とスマートフォン表示は未確認 |
+| 下線 | `[u]本文[/u]` | Verified | 2026-07-30、PC版、背景白 |
+| 取消線 | `[s]本文[/s]` | Verified | 2026-07-30、PC版、背景白 |
+| 文字サイズ | `[size=18]本文[/size]` | Verified | UIプリセットは10、12、18、32。任意値は未検証 |
+| 文字色 | `[color=#FF99CC]本文[/color]` | Verified | 42色中3色の構文と1色の背景白表示を検証 |
+| URLリンク | `[url=https://example.com]リンク[/url]` | Verified | 外部HTTPS URL 1件だけを検証 |
 | 非表示 | `[hb]本文[/hb]` | Community | 正確な構文と現在の挙動は未確認 |
 | 画像 | `[img=画像ID]` | Community | 正確な属性形式は未確認 |
 | DB埋め込み | `[db:item=1db77e54e4d]表示名[/db:item]` | Official | Item以外のカテゴリは未確認 |
@@ -969,3 +1017,4 @@ LDSでの推奨または標準利用可否を示す一覧ではない。
 | 0.3 | 2026-07-19 | 内部の実機検証計画と優先度付きバックログを公開技術リファレンスから分離。 |
 | 0.4 | 2026-07-19 | Applied Governance-defined Evidence, separated feature and syntax claims, removed editorial recommendations, and replaced standard candidates with an evidence-labeled syntax reference. |
 | 0.5 | 2026-07-20 | Generalized unresolved platform assumptions, aligned display terminology, completed the cross-document consistency review, and advanced the document to Review. |
+| 0.6 | 2026-07-30 | Verified current rich-editor syntax and saved-draft behavior for basic text decoration, UI size presets, representative color values, and one external HTTPS link. |
