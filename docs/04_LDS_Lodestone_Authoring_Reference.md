@@ -1,7 +1,7 @@
 ---
 title: LDS Lodestone Authoring Reference
 document_id: LDS-04
-version: 0.6
+version: 0.7
 status: Review
 last_updated: 2026-07-30
 owner: Lodestone Design System
@@ -373,22 +373,30 @@ UIパレット外の値を同形式で指定できる範囲は未検証。
 
 **Feature evidence:** Official
 
-**Syntax evidence:** Unknown
+**Syntax evidence:** Verified
+
+**Behavior evidence:** Verified
 
 2019年の公式更新情報で、
 リッチ編集モードにテキストの表示位置を編集できるコードが追加された。
 
-公式ページのテキスト抽出からは、
-具体的なタグ名・属性値を確認できていない。
+**Verification note:** 2026-07-30、Windows PC、Lodestone PC版、
+リッチ編集モード、背景黒の下書きで、
+UIが生成した構文、保存後の配置、再編集時の構文保持を確認した。
 
-確認対象：
+現在のUIと生成構文の対応は次の通り。
 
-- 左寄せ
-- 中央寄せ
-- 右寄せ
-- 対応タグ
+| UI | 検証済み構文 |
+|---|---|
+| 左寄せ | `[left]本文[/left]` |
+| 中央寄せ | `[center]本文[/center]` |
+| 右寄せ | `[right]本文[/right]` |
+
+未検証：
+
 - 複数段落への適用
 - 画像・動画との組み合わせ
+- 他の装飾タグとの入れ子
 
 ---
 
@@ -405,7 +413,7 @@ UIパレット外の値を同形式で指定できる範囲は未検証。
 **Verification note:** 2026-07-30、Windows PC、Lodestone PC版、リッチ編集モード、
 背景白の下書きで、外部HTTPS URL 1件を確認した。
 保存後のリンク先と再編集時の構文は入力値と一致した。
-HTTP、Lodestone内部URL、長いURL、日本語URLは未検証。
+HTTP、Lodestone内部URL、日本語URLは未検証。
 
 検証済み構文：
 
@@ -417,14 +425,37 @@ HTTP、Lodestone内部URL、長いURL、日本語URLは未検証。
 
 - `http`
 - Lodestone内部URL
-- 長いURL
 - 日本語URL
-- URLだけを貼った場合の自動リンク
 - 装飾タグとの入れ子
 - 外部リンク警告画面の有無
 - 投稿後の `rel` や新規タブ挙動
 
-### 7.2 URLタグ内の装飾
+### 7.2 URLだけを貼った場合の自動リンク
+
+**Feature evidence:** Verified
+
+**Syntax evidence:** Verified
+
+**Behavior evidence:** Verified
+
+**Verification note:** 2026-07-30、Windows PC、Lodestone PC版、
+リッチ編集モード、背景黒の下書きで確認した。
+286文字のHTTPS URLを装飾タグなしで入力すると自動的にリンク化され、
+再編集時は入力した生のURLが保持された。
+
+本文幅570pxでは4行へ折り返された。
+CSS viewport `1280×720`、`1920×1080`、`2560×1440` の3条件で、
+本文または文書全体の横方向オーバーフローは発生しなかった。
+
+未検証：
+
+- HTTP URL
+- 日本語を含むURL
+- Lodestone内部URL
+- 末尾の句読点や括弧との境界
+- 複数URLの連続入力
+
+### 7.3 URLタグ内の装飾
 
 **Syntax evidence:** Unknown
 
@@ -667,30 +698,69 @@ Patch 5.1以降に入力されたUnicode絵文字を表示できるようにな�
 
 ## 13. 改行・空白・段落
 
-**Evidence:** Unknown
+**Behavior evidence:** Verified
 
-**Verification note:** 改行、空白、段落を体系的に実機検証する必要がある。
+**Verification note:** 2026-07-30、Windows PC、Lodestone PC版、
+リッチ編集モード、背景黒の下書きで確認した。
+エディタ内プレビュー、保存後の記事、再編集時の本文を比較した。
 
-Markdownの段落規則やHTMLの空白処理を前提にしない。
+検証したCSS viewportは `1280×720`、`1920×1080`、
+4Kディスプレイの150%表示相当となる論理 `2560×1440` である。
+3条件とも記事本文幅は570pxで、本文の表示結果は一致した。
 
-検証対象：
+Markdownの段落規則や一般的なHTMLの空白処理ではなく、
+現在のLodestoneリッチ編集モードで確認した挙動として扱う。
 
-- 改行1回
-- 空行1行
-- 連続空行
-- 行頭半角スペース
-- 行頭全角スペース
-- 連続半角スペース
-- 連続全角スペース
-- タブ
+### 13.1 改行と空行
+
+- 改行1回は、保存後に1個の改行要素として表示された。
+- 1行の空行は、連続する2個の改行要素として保持された。
+- 2行、3行の連続空行も、入力数に対応する連続改行として保持された。
+- 再編集時の本文でも、入力した改行と空行は保持された。
+
+### 13.2 空白とタブ
+
+現在の記事本文は、検証環境で `white-space: pre-wrap` として表示された。
+
+- 1個、2個、4個の連続半角スペースを保持した。
+- 1個、2個、4個の連続全角スペースを保持した。
+- 行頭と行末に置いた4個の半角スペースを保持した。
+- 行頭と行末に置いた4個の全角スペースを保持した。
+- タブ文字は保存後の表示と再編集時の本文で保持された。
+
+タブの視覚幅は表示環境に依存する可能性がある。
+保持されることは、LDSが記事組版での利用を推奨することを意味しない。
+
+### 13.3 長い文字列の折り返し
+
+現在の記事本文は、検証環境で
+`overflow-wrap: break-word`、`word-break: normal` として表示された。
+
+本文幅570pxで、次の文字列は横方向へはみ出さずに折り返された。
+
+| 対象 | 検証文字数 | 表示行数 |
+|---|---:|---:|
+| 句読点を含む日本語 | 260 | 6 |
+| 空白を含まない英数字列 | 248 | 4 |
+| HTTPS URL | 286 | 4 |
+| 連続する罫線文字 `─` | 96 | 3 |
+
+`1280×720`、`1920×1080`、`2560×1440` の3つのCSS viewportで、
+本文幅と折り返し行数は一致した。
+
+### 13.4 未検証
+
+次は引き続き未検証である。
+
 - タグ直前・直後の改行
 - 開始タグと本文間の改行
 - 終了タグ前の改行
 - 空タグ
 - 大サイズ文字の行間
-- 罫線文字の折り返し
-- 長い英数字列
-- URLの折り返し
+- 段落を表す専用要素の有無
+- 背景白での視覚的妥当性
+- スマートフォン表示
+- 物理ディスプレイ固有の色、精細度、OS描画品質
 
 ---
 
@@ -788,6 +858,12 @@ Markdownの段落規則やHTMLの空白処理を前提にしない。
 罫線文字を連続させた視覚的区切りが利用されている。
 
 **Representation evidence:** Observed
+
+**Behavior evidence:** Verified
+
+**Verification note:** 2026-07-30、PC版、リッチ編集モード、
+背景黒、本文幅570pxで、96個の罫線文字 `─` が3行へ折り返され、
+横方向へはみ出さないことを確認した。
 
 例：
 
@@ -973,11 +1049,14 @@ LDSでの推奨または標準利用可否を示す一覧ではない。
 | 文字サイズ | `[size=18]本文[/size]` | Verified | UIプリセットは10、12、18、32。任意値は未検証 |
 | 文字色 | `[color=#FF99CC]本文[/color]` | Verified | 42色中3色の構文と1色の背景白表示を検証 |
 | URLリンク | `[url=https://example.com]リンク[/url]` | Verified | 外部HTTPS URL 1件だけを検証 |
+| URL自動リンク | `https://example.com` | Verified | 装飾タグなしの長いHTTPS URLで保存、リンク化、折り返し、再編集時の保持を検証 |
+| 左寄せ | `[left]本文[/left]` | Verified | PC版、背景黒でUI、保存後配置、再編集時の保持を検証 |
+| 中央寄せ | `[center]本文[/center]` | Verified | PC版、背景黒でUI、保存後配置、再編集時の保持を検証 |
+| 右寄せ | `[right]本文[/right]` | Verified | PC版、背景黒でUI、保存後配置、再編集時の保持を検証 |
 | 非表示 | `[hb]本文[/hb]` | Community | 正確な構文と現在の挙動は未確認 |
 | 画像 | `[img=画像ID]` | Community | 正確な属性形式は未確認 |
 | DB埋め込み | `[db:item=1db77e54e4d]表示名[/db:item]` | Official | Item以外のカテゴリは未確認 |
 | 動画 | 未確定 | Unknown | 対応サービスの機能情報とは分離する |
-| 表示位置 | 未確定 | Unknown | 機能の存在はOfficial |
 
 標準利用の判断は、
 [`03_LDS_Editorial_Methodology.md`](03_LDS_Editorial_Methodology.md) のPass 7に従う。
@@ -1018,3 +1097,4 @@ LDSでの推奨または標準利用可否を示す一覧ではない。
 | 0.4 | 2026-07-19 | Applied Governance-defined Evidence, separated feature and syntax claims, removed editorial recommendations, and replaced standard candidates with an evidence-labeled syntax reference. |
 | 0.5 | 2026-07-20 | Generalized unresolved platform assumptions, aligned display terminology, completed the cross-document consistency review, and advanced the document to Review. |
 | 0.6 | 2026-07-30 | Verified current rich-editor syntax and saved-draft behavior for basic text decoration, UI size presets, representative color values, and one external HTTPS link. |
+| 0.7 | 2026-07-30 | Verified alignment syntax, line breaks, whitespace preservation, long-string wrapping, bare HTTPS URL auto-linking, and rule-character behavior across desktop viewport conditions. |
