@@ -1,7 +1,7 @@
 ---
 title: LDS Lodestone Authoring Reference
 document_id: LDS-04
-version: 0.9
+version: 0.10
 status: Review
 last_updated: 2026-07-30
 owner: Lodestone Design System
@@ -119,6 +119,24 @@ toolbarと文書全体に横方向オーバーフローは発生しなかった�
 物理Full HD環境の想定DPR `1`、色、精細度、OS描画品質、
 スマートフォン版へは一般化しない。
 
+### 3.4 Phase 6共通検証環境
+
+本書で現在の本文counter、計数挙動、確認画面の文字数境界を
+`Verified` とする場合は、個別に記載がない限り次の条件で確認した。
+
+- 確認日：2026-07-30
+- 環境：Windows PC、Lodestone PC版
+- 対象：新規日記作成画面
+- 編集：シンプル編集モード、リッチ編集モード
+- 背景：リッチ編集は黒
+- 方法：短い通常文字、Unicode、markupと、
+  ASCII `A`を9,999、10,000、10,001文字入力
+- 確認画面：公開範囲を下書き、タグなし、使用言語を日本語として遷移
+- 永続的変更：「投稿」は実行せず、すべての入力を破棄
+
+最終保存または公開、スマートフォン版、
+タイトル、日記タグ、コメントの文字数境界へは一般化しない。
+
 ---
 
 ## 4. 日記編集モード
@@ -231,31 +249,66 @@ UI外の操作や将来の仕様まで変更不能とは断定しない。
 
 ### 5.1 日記本文の上限
 
-**Evidence:** Official
+**Historical evidence:** Official
 
-**Verification note:** 2015年時点の上限であり、現在の値は再検証が必要。
+**Current confirmation behavior evidence:** Verified
+
+**Verification note:** 3.4の環境で、両編集modeのASCII本文境界を確認した。
 
 2015年のリッチ編集モード追加時に、
 日記本文の入力文字数制限が10,000文字へ拡張された。
 
-現在も同じ上限であるかは、LDSで実機確認する。
+現在のシンプル編集とリッチ編集では、
+ASCII本文10,000文字を確認画面へ受理し、
+10,001文字を入力画面で拒否した。
+
+10,001文字では次のvalidation messageを表示する。
+
+> 本文は10000文字以内で入力してください。
+
+client-sideでは10,001文字をtextareaへ保持でき、
+counterも`10001 / 10000`と表示した。
+切り捨て、上限警告、「確認」buttonの無効化はなく、
+「確認」操作時にserver-side validationが行われた。
+
+最終の「投稿」は実行していないため、
+10,000文字の日記を実際に保存または公開できることは未検証である。
+Unicodeを含む10,000文字境界も未検証であり、
+5.2の短い入力結果から自動的に一般化しない。
 
 ### 5.2 文字数カウンター
 
-**Feature evidence:** Official
+**Historical feature evidence:** Official
 
-**Verification note:** 現在のカウント条件は再検証が必要。
+**Current feature evidence:** Verified
+
+**Counting behavior evidence:** Verified
+
+**Verification note:** 3.4の環境で、短い入力ごとにcounterを測定した。
 
 同更新で、入力文字数カウンターが追加された。
 
-確認項目：
+現在の両編集modeでは、
+本文counterの初期値を`0 / 10000`と表示する。
+本文textareaに`maxlength`属性はなく、
+DOMの`maxLength` propertyは`-1`だった。
 
-- タグ文字列が文字数に含まれるか
-- 改行が文字数に含まれるか
-- DB埋め込みコードの数え方
-- 絵文字の数え方
-- 全角・半角による差
-- 下書き保存時と投稿時の判定差
+検証した短い入力では、
+counterはUTF-16 code unit数やgrapheme cluster数ではなく、
+Unicode code point数と一致した。
+
+| Input | Unicode code points | Counter |
+|---|---:|---:|
+| ASCII、日本語、全角英字各1文字 | 1 | 1 |
+| 改行1件 | 1 | 1 |
+| `😀` | 1 | 1 |
+| `e` + combining acute accent | 2 | 2 |
+| `👩‍💻` | 3 | 3 |
+
+BBCode、DB item code、画像codeは、
+表示文字だけでなくtagとparameterを含むraw markup全体を数えた。
+この結果は検証した構文へ限定し、
+すべてのmarkupや最大長のUnicode入力へ一般化しない。
 
 ---
 
@@ -1247,3 +1300,4 @@ LDSでの推奨または標準利用可否を示す一覧ではない。
 | 0.7 | 2026-07-30 | Verified alignment syntax, line breaks, whitespace preservation, long-string wrapping, bare HTTPS URL auto-linking, and rule-character behavior across desktop viewport conditions. |
 | 0.8 | 2026-07-30 | Verified disclosure syntax and behavior, image insertion and saved display, DB item display behavior, and supported normal tag nesting across desktop viewport conditions. |
 | 0.9 | 2026-07-30 | Verified current simple and rich editor surfaces, saved-mode retention and change-control absence, publication options and retained settings, and desktop editor layout coverage. |
+| 0.10 | 2026-07-30 | Verified current body counter semantics, raw markup counting, ASCII 10,000-character confirmation acceptance, and 10,001-character validation across both editor modes. |
