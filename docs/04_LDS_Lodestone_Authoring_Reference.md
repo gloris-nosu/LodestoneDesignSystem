@@ -1,7 +1,7 @@
 ---
 title: LDS Lodestone Authoring Reference
 document_id: LDS-04
-version: 0.7
+version: 0.8
 status: Review
 last_updated: 2026-07-30
 owner: Lodestone Design System
@@ -72,6 +72,30 @@ LDSのデザイン原則や編集方法論ではなく、
 - `Verified` は確認日と確認環境を記録する。
 - `Community` だけを根拠に仕様を断定しない。
 - 未検証事項は推測で埋めず、`Unknown` として残す。
+
+### 3.2 Phase 3共通検証環境
+
+本書で非表示／展開表示、画像、DB表示挙動、
+正常なタグの入れ子を `Verified` とする場合は、
+個別に記載がない限り次の条件で確認した。
+
+- 確認日：2026-07-30
+- 環境：Windows PC、Lodestone PC版
+- 編集：リッチ編集モード
+- 背景：黒
+- 方法：UIまたは既存のOfficial構文から入力し、エディタ内プレビュー、
+  下書き保存後の表示、再読込、再編集時の構文保持を確認
+- CSS viewport：`1920×1080`、4Kディスプレイの150%表示相当となる
+  論理 `2560×1440`
+- device pixel ratio：`1920×1080` は検証単位により約`1.58`または約`2.37`、
+  `2560×1440` は約`1.58`
+
+両viewportで対象記事の本文幅は620pxとなり、
+本文と文書全体に横方向オーバーフローは発生しなかった。
+
+`1920×1080` は論理viewportの再現であり、
+物理Full HD環境の想定DPR `1`、色、精細度、OS描画品質は検証していない。
+スマートフォン版と背景白へも一般化しない。
 
 ---
 
@@ -343,7 +367,9 @@ LDSで改めて検証する必要がある。
 
 **Verification note:** 共通検証環境で、UI上に42色のパレットが存在することを確認した。
 3色の生成構文と、そのうち1色の保存後表示を検証した。
-背景黒でのコントラストと、全パレット値は未検証。
+Phase 3共通検証環境では、`#FF99CC` を非表示領域と
+3階層の正常な入れ子で保存し、背景黒での表示を確認した。
+全パレット値と背景ごとのコントラストは未検証。
 
 検証済み構文例：
 
@@ -395,8 +421,13 @@ UIが生成した構文、保存後の配置、再編集時の構文保持を確
 未検証：
 
 - 複数段落への適用
-- 画像・動画との組み合わせ
-- 他の装飾タグとの入れ子
+- 左寄せ／右寄せと画像の組み合わせ
+- 動画との組み合わせ
+- 未検証の装飾タグとの入れ子
+
+中央寄せと文字サイズ、中央寄せと画像の正常な入れ子は、
+Phase 3共通検証環境で確認した。
+詳細は「14. タグの入れ子」を参照する。
 
 ---
 
@@ -426,7 +457,6 @@ HTTP、Lodestone内部URL、日本語URLは未検証。
 - `http`
 - Lodestone内部URL
 - 日本語URL
-- 装飾タグとの入れ子
 - 外部リンク警告画面の有無
 - 投稿後の `rel` や新規タブ挙動
 
@@ -457,19 +487,23 @@ CSS viewport `1280×720`、`1920×1080`、`2560×1440` の3条件で、
 
 ### 7.3 URLタグ内の装飾
 
-**Syntax evidence:** Unknown
+**Syntax evidence:** Verified
 
-候補：
+**Behavior evidence:** Verified
+
+**Verification note:** Phase 3共通検証環境で、
+外部HTTPS URLの内側へ太字を配置し、
+保存後のリンクと太字、再編集時の構文保持を確認した。
+保存後のリンクには `rel="nofollow noopener"` が付与された。
+
+検証済み構文：
 
 ```bbcode
 [url=https://example.com][b]リンク[/b][/url]
 ```
 
-```bbcode
-[b][url=https://example.com]リンク[/url][/b]
-```
-
-両者の挙動を実機比較する。
+太字の外側へURLを配置する逆順、
+他の装飾、HTTP、内部URLとの組み合わせは未検証。
 
 ---
 
@@ -479,19 +513,33 @@ CSS viewport `1280×720`、`1920×1080`、`2560×1440` の3条件で、
 
 **Feature evidence:** Official
 
-公式UIには「隠す」機能が存在する。
+**Syntax evidence:** Verified
 
-ユーザー記事では、`hb` タグとして報告されている。
+**Behavior evidence:** Verified
 
-報告例：
+**Verification note:** Phase 3共通検証環境で、
+UIが生成した構文、初期表示、開閉、再読込、
+複数領域、複数行、空行、正常な入れ子を確認した。
+
+検証済み構文：
 
 ```bbcode
 [hb]非表示にする内容[/hb]
 ```
 
-**Syntax evidence:** Community
+確認した挙動：
 
-公開後は、読者が操作して内容を表示する形式になる。
+- 初期状態では内容を非表示にし、`クリックして表示` と表示する。
+- 展開後は内容を表示し、操作文言を `クリックして隠す` へ切り替える。
+- 再読込すると初期非表示へ戻る。
+- 連続する非表示領域は個別に開閉できる。
+- 複数行と空行を保持する。
+- 1投稿で使用できる `hb` タグは最大5件である。
+- 文字色、画像、DB itemコードを内側へ配置できる。
+
+現在のUIでは任意ラベルを指定する入力欄を確認できなかった。
+任意ラベル用の構文が存在しないとは断定せず、
+正確な構文と挙動は `Unknown` とする。
 
 ### 8.2 編集上の扱い
 
@@ -500,17 +548,12 @@ CSS viewport `1280×720`、`1920×1080`、`2560×1440` の3条件で、
 
 ### 8.3 検証項目
 
-- 展開ボタンの表示文言
-- 任意ラベル指定の可否
-- 複数段落
-- 画像
 - 動画
-- DB埋め込みコード
-- 入れ子
-- 複数連続配置
 - スマートフォン操作
-- 展開状態の保持
 - 検索インデックスへの含まれ方
+- 任意ラベル指定構文の有無
+- 不正な入れ子の補正
+- 最大入れ子深度
 
 ---
 
@@ -520,23 +563,49 @@ CSS viewport `1280×720`、`1920×1080`、`2560×1440` の3条件で、
 
 **Feature evidence:** Official
 
-リッチ編集モードでは、日記本文中へ画像を挿入できる。
+**Syntax evidence:** Verified
 
-ユーザー記事では、画像IDを使う `img` タグが報告されている。
+**Behavior evidence:** Verified
 
-報告形式：
+**Verification note:** Phase 3共通検証環境で、
+1024×576pxの不透明PNG 1件をアップロードし、
+UIが生成した構文、保存後表示、元画像表示、
+再編集時の構文保持を確認した。
+
+検証済み構文：
 
 ```bbcode
 [img=画像ID]
 ```
 
-または実装上類似する形式。
+`画像ID` は、Lodestoneへアップロードした画像に割り当てられる数値である。
 
-**Syntax evidence:** Community
+本文内では110×110pxのJPEGサムネイルとして表示され、
+操作すると元画像をライトボックスで表示した。
+サムネイルは元画像へのリンクを持ち、
+検証した `img` 要素の `alt` は空文字だった。
 
-**Verification note:** 正確な属性形式と現在の挙動は未確認。
+### 9.2 現在の画像アップロードUI
 
-### 9.2 画像の参照切れ
+**Upload UI evidence:** Verified
+
+**Verification note:** Phase 3共通検証環境で、
+現在の画像選択UIに表示された条件を記録した。
+上限値の境界と全形式の実動作は確認していない。
+
+UIには次が表示される。
+
+- JPEG、GIF、PNG形式
+- 1点につき30MB以内
+- 同時に10枚までアップロード可能
+- 一辺が1024pxを超える画像はリサイズし、JPEGへ変換
+- 外部画像参照機能
+
+検証時の画像選択ダイアログと投稿フォームでは、
+サムネイルを別途指定するUIを確認できなかった。
+この観察だけでサムネイル指定機能が存在しないとは断定しない。
+
+### 9.3 画像の参照切れ
 
 **Behavior evidence:** Observed
 
@@ -545,20 +614,17 @@ CSS viewport `1280×720`、`1920×1080`、`2560×1440` の3条件で、
 
 これは、外部画像・過去仕様・HTTPS移行などが影響している可能性がある。
 
-### 9.3 未確認事項
+### 9.4 未確認事項
 
-- アップロード可能枚数
-- 1枚あたりの容量
-- 対応形式
-- 最大解像度
-- 自動リサイズ
-- 圧縮
-- EXIF情報
+- UI表示上限の境界値
+- GIFのアップロードとアニメーション
 - 透過PNG
-- GIFアニメーション
-- 本文内での配置
+- 一辺1024px超の実際のリサイズとJPEG変換
+- アップロード後の圧縮品質
+- EXIF情報を含む画像の処理
+- 外部画像参照
 - キャプション
-- 代替テキスト
+- 代替テキストの指定
 - 削除時の本文リンク
 - サムネイル選択
 - 公開後の差し替え
@@ -604,6 +670,8 @@ CSS viewport `1280×720`、`1920×1080`、`2560×1440` の3条件で、
 
 **Syntax evidence:** Official
 
+**Behavior evidence:** Verified
+
 エオルゼアデータベースには、
 Lodestone内で使用する専用埋め込みコードがある。
 
@@ -614,6 +682,13 @@ Lodestone内で使用する専用埋め込みコードがある。
 ```
 
 投稿後、対応するコンテンツではツールチップとして表示される。
+
+**Verification note:** Phase 3共通検証環境で、
+itemコードの表示、リンク、ツールチップ、
+再編集時の構文保持を確認した。
+タグ内の表示名を1件変更しても、
+変更後の表示名、同じitemへのリンク、ツールチップを保持した。
+非表示領域の内側でも、展開後に同じ表示と操作が成立した。
 
 公式説明では、次が明記されている。
 
@@ -653,12 +728,10 @@ Lodestone内で使用する専用埋め込みコードがある。
 
 ### 11.3 検証項目
 
-- 表示名の改変可否
 - 言語切替時の表示
 - 存在しないID
 - 古いID
 - 色・太字・サイズとの組み合わせ
-- 非表示領域内
 - ツールチップ非対応画面
 - スマートフォン表示
 
@@ -768,21 +841,27 @@ Markdownの段落規則や一般的なHTMLの空白処理ではなく、
 
 ### 14.1 基本形
 
-公開中のLodestone記事では、次の入れ子が観測されている。
+Phase 3共通検証環境で、次の3階層を保存し、
+表示と再編集時の構文保持を確認した。
 
-**Syntax evidence:** Observed
+**Syntax evidence:** Verified
+
+**Behavior evidence:** Verified
 
 ```bbcode
-[size=18][b][color=#CBB8E8]本文[/color][/b][/size]
+[size=18][b][color=#FF99CC]本文[/color][/b][/size]
 ```
 
 これはLodestone公式の必須順序またはLDSの推奨順序を示すものではない。
 
 ### 14.2 閉じタグ
 
-公開記事では、後から開いたタグを先に閉じる構文が観測されている。
+後から開いたタグを先に閉じる正常な構文を、
+保存後表示と再編集時の構文保持で確認した。
 
-**Syntax evidence:** Observed
+**Syntax evidence:** Verified
+
+**Behavior evidence:** Verified
 
 ```bbcode
 [size=18][b]本文[/b][/size]
@@ -796,22 +875,25 @@ Markdownの段落規則や一般的なHTMLの空白処理ではなく、
 
 不正な閉じ順序をLodestoneが自動補正するかは未検証。
 
-**Behavior evidence:** Unknown
-
 ### 14.3 検証マトリックス
 
 | 外側 | 内側 | Evidence |
 |---|---|---|
-| size | b | Observed |
-| size | color | Observed |
-| b | color | Observed |
+| size | b | Verified |
+| size | color | Verified |
+| b | color | Verified |
 | color | size | Observed |
-| url | b | Unknown |
-| hb | color | Unknown |
-| hb | img | Unknown |
-| hb | db:item | Unknown |
-| alignment | size | Unknown |
-| alignment | img | Unknown |
+| url | b | Verified |
+| hb | color | Verified |
+| hb | img | Verified |
+| hb | db:item | Verified |
+| center | size | Verified |
+| center | img | Verified |
+
+`Verified` の組み合わせは、
+Phase 3共通検証環境で正常な閉じ順序、
+保存後表示、再編集時の構文保持を確認した。
+不正な閉じ順序、自動補正、最大入れ子深度は未検証。
 
 ---
 
@@ -1053,9 +1135,10 @@ LDSでの推奨または標準利用可否を示す一覧ではない。
 | 左寄せ | `[left]本文[/left]` | Verified | PC版、背景黒でUI、保存後配置、再編集時の保持を検証 |
 | 中央寄せ | `[center]本文[/center]` | Verified | PC版、背景黒でUI、保存後配置、再編集時の保持を検証 |
 | 右寄せ | `[right]本文[/right]` | Verified | PC版、背景黒でUI、保存後配置、再編集時の保持を検証 |
-| 非表示 | `[hb]本文[/hb]` | Community | 正確な構文と現在の挙動は未確認 |
-| 画像 | `[img=画像ID]` | Community | 正確な属性形式は未確認 |
-| DB埋め込み | `[db:item=1db77e54e4d]表示名[/db:item]` | Official | Item以外のカテゴリは未確認 |
+| URL内太字 | `[url=https://example.com][b]リンク[/b][/url]` | Verified | 外部HTTPS URL 1件で保存後表示と構文保持を検証 |
+| 非表示 | `[hb]本文[/hb]` | Verified | PC版、背景黒で初期非表示、開閉、再読込、最大5件を検証 |
+| 画像 | `[img=画像ID]` | Verified | 不透明PNG 1件で110pxサムネイル、元画像表示、構文保持を検証 |
+| DB埋め込み | `[db:item=1db77e54e4d]表示名[/db:item]` | Official | Itemの表示、リンク、ツールチップはVerified。Item以外は未確認 |
 | 動画 | 未確定 | Unknown | 対応サービスの機能情報とは分離する |
 
 標準利用の判断は、
@@ -1098,3 +1181,4 @@ LDSでの推奨または標準利用可否を示す一覧ではない。
 | 0.5 | 2026-07-20 | Generalized unresolved platform assumptions, aligned display terminology, completed the cross-document consistency review, and advanced the document to Review. |
 | 0.6 | 2026-07-30 | Verified current rich-editor syntax and saved-draft behavior for basic text decoration, UI size presets, representative color values, and one external HTTPS link. |
 | 0.7 | 2026-07-30 | Verified alignment syntax, line breaks, whitespace preservation, long-string wrapping, bare HTTPS URL auto-linking, and rule-character behavior across desktop viewport conditions. |
+| 0.8 | 2026-07-30 | Verified disclosure syntax and behavior, image insertion and saved display, DB item display behavior, and supported normal tag nesting across desktop viewport conditions. |

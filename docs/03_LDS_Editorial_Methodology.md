@@ -1,9 +1,9 @@
 ---
 title: LDS Editorial Methodology
 document_id: LDS-03
-version: 0.5
+version: 0.6
 status: Review
-last_updated: 2026-07-20
+last_updated: 2026-07-30
 owner: Lodestone Design System
 ---
 
@@ -305,7 +305,7 @@ Evidenceを参照する。
 完了条件：
 
 - 折り畳みを開かなくても本文の論理が成立する
-- 開閉位置とラベルから内容を予測できる
+- 開閉位置の直前または周辺にある見出し・説明から、折り畳み内容を予測できる
 
 ### Pass 7：BBCode実装
 
@@ -455,3 +455,4 @@ Case Studyの必須項目と知見の昇格条件は、
 | 0.3 | 2026-07-19 | Clarified the boundary between design criteria and editorial procedure, aligned role terminology with Governance, centralized color application, and defined syntax use by Authoring Reference evidence status. |
 | 0.4 | 2026-07-19 | Replaced technical Status references with Governance-defined Evidence, separated feature and syntax checks, and added a fallback rule for unverified constructs. |
 | 0.5 | 2026-07-20 | Standardized article-author terminology, generalized display-background checks, completed the cross-document consistency review, and advanced the document to Review. |
+| 0.6 | 2026-07-30 | Aligned the folding completion criteria with verified disclosure behavior by replacing assumed label dependence with surrounding headings and descriptions. |
