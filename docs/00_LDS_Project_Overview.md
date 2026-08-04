@@ -1,9 +1,9 @@
 ---
 title: LDS Project Overview
 document_id: LDS-00
-version: 0.7
+version: 0.8
 status: Review
-last_updated: 2026-07-20
+last_updated: 2026-08-04
 owner: Lodestone Design System
 ---
 
@@ -12,12 +12,22 @@ owner: Lodestone Design System
 ## 1. プロジェクト概要
 
 Lodestone Design System（LDS）は、FINAL FANTASY XIV Lodestoneの日記機能を対象とした、
-編集・組版・情報デザインの体系である。
+編集・組版・情報デザインのデザインシステムである。
 
 目的は記事を派手に装飾することではない。
 
 **文章の論理構造、情報の役割、読者の視線、技術的制約を統合し、
 長文でも内容を追いやすい記事を設計すること**を目的とする。
+
+中核成果物は、記事テーマを問わず利用でき、
+文字色、文字サイズ、改行、余白、情報階層を
+Lodestoneの実表示へ合わせた記事テンプレートである。
+基幹文書と実機検証は、その設計根拠と継続的な保守を支える。
+
+テンプレートは、可読性、accessibility、色彩、typography、日本語組版の
+専門的知見を調査し、Lodestone固有のEvidenceと組み合わせて設計する。
+外部の一般原則、Lodestoneの技術的事実、設計上の推論を区別し、
+実装可能性と実表示を確認したうえで公開成果物へ反映する。
 
 ---
 
@@ -207,7 +217,11 @@ LDSでは、正確性、論理の追跡可能性、誤読の防止、可読性�
 
 ## 9. 記事ファミリー
 
-将来的に、共通原則を維持しながら記事目的別のテンプレートを整備する。
+最初に、共通原則と検証済みのLodestone仕様を組み合わせた
+汎用記事テンプレートを整備する。
+
+その後、汎用テンプレートのコンポーネントを共有しながら、
+記事目的別のテンプレートへ展開する。
 
 - LDS Essay
 - LDS Guide
@@ -244,3 +258,4 @@ LDSは固定された完成品ではなく、記事への適用、実画面確�
 | 0.5 | 2026-07-19 | Generalized author and editor responsibilities and removed internal work-state tracking from the public overview. |
 | 0.6 | 2026-07-19 | Clarified document relationships, separated article and LDS governance roles, and delegated normative rules to Governance and Design Principles. |
 | 0.7 | 2026-07-20 | Aligned the overview with the canonical editorial workflow and Evidence terminology, generalized technical constraints, and advanced the document to Review. |
+| 0.8 | 2026-08-04 | Defined the reusable Lodestone-tuned article template as the core deliverable and established research-grounded synthesis of professional guidance, platform evidence, and practical verification. |

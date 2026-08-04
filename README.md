@@ -1,10 +1,18 @@
 # Lodestone Design System
 
 Lodestone Design System（LDS）は、FINAL FANTASY XIV Lodestone日記を
-一貫した品質で継続的・再利用可能に制作するためのMarkdownベースの文書体系です。
+一貫した品質で継続的・再利用可能に制作するためのデザインシステムです。
 
 記事を派手に装飾することではなく、文章の論理構造、情報の役割、読者の視線、
 Lodestone固有の技術的制約を統合して設計することを目的とします。
+
+中核成果物は、文字色、文字サイズ、改行、余白、情報階層を
+Lodestoneの実表示へ合わせた汎用記事テンプレートです。
+Markdown文書は、その設計根拠、利用方法、技術的制約を管理します。
+
+テンプレートは、可読性、accessibility、色彩、typography、日本語組版の知見を
+Lodestone固有の技術Evidenceと組み合わせて設計します。
+一般的なWebの推奨をそのまま転用せず、実装可能性と実表示を確認します。
 
 ## Source of Truth
 
@@ -21,6 +29,10 @@ Lodestone固有の技術的制約を統合して設計することを目的と�
 | LDS-02 | [`docs/02_LDS_Design_Principles.md`](docs/02_LDS_Design_Principles.md) | 設計判断の価値基準と優先順位 |
 | LDS-03 | [`docs/03_LDS_Editorial_Methodology.md`](docs/03_LDS_Editorial_Methodology.md) | 記事へLDSを適用する編集手順 |
 | LDS-04 | [`docs/04_LDS_Lodestone_Authoring_Reference.md`](docs/04_LDS_Lodestone_Authoring_Reference.md) | Lodestoneの技術仕様、記法、制約、Evidence |
+
+## Templates
+
+- [`templates/general-article-template.md`](templates/general-article-template.md) — 背景黒向けの汎用記事テンプレート。4色版・5色版を収録、現在 `Draft`
 
 ## Working Rules
 
